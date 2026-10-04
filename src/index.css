@@ -1,0 +1,461 @@
+@import "tailwindcss";
+
+html, body {
+  background-color: #06080d;
+  color: #e2e8f0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   Standalone Interactive Game HUD & Viewport Framing
+   ============================================================ */
+
+/* Outer Game Screen Vignette & Tactical Frame with Subtle Cyber Gradient & Ambient Depth */
+.game-viewport-frame {
+  position: relative;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(14, 165, 233, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 20%, rgba(245, 158, 11, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 85%, rgba(99, 102, 241, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 25% 80%, rgba(244, 63, 94, 0.08) 0%, transparent 50%),
+    linear-gradient(145deg, #070a14 0%, #0d1527 40%, #091020 70%, #05070e 100%);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
+}
+
+/* Tactical HUD Corner Crosshairs */
+.hud-corner-tl {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  border-top: 2px solid rgba(251, 191, 36, 0.4);
+  border-left: 2px solid rgba(251, 191, 36, 0.4);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.hud-corner-tr {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  border-top: 2px solid rgba(251, 191, 36, 0.4);
+  border-right: 2px solid rgba(251, 191, 36, 0.4);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.hud-corner-bl {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  border-bottom: 2px solid rgba(251, 191, 36, 0.4);
+  border-left: 2px solid rgba(251, 191, 36, 0.4);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.hud-corner-br {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  border-bottom: 2px solid rgba(251, 191, 36, 0.4);
+  border-right: 2px solid rgba(251, 191, 36, 0.4);
+  pointer-events: none;
+  z-index: 30;
+}
+
+/* Outer 3D Perspective Stage */
+.perspective-stage-wrapper {
+  width: 100%;
+}
+
+/* 3D Scene Trapezoid Container */
+.spatial-perspective-container {
+  width: 100%;
+}
+
+/* 3D Depth Card Base & Lift Styles - Each card forms a pronounced isosceles trapezoid (left side shorter) */
+.spatial-card-3d {
+  --card-z: 0px;
+  transform-style: preserve-3d;
+  transform: perspective(600px) rotateY(-1deg) translateZ(var(--card-z));
+  transform-origin: 100% 50%;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease, filter 0.5s ease;
+}
+
+.spatial-card-liziba {
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.7);
+}
+
+.spatial-card-jiefangbei {
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.65);
+}
+
+.spatial-card-hongyadong {
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+}
+
+.spatial-card-chonggang {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+}
+
+/* Chonggang Unseal 2s 4-Flash Glow Animation (0.5s x 4 = 2.0s) */
+@keyframes chonggang-unseal-flash {
+  0%, 100% {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+    border-color: rgba(30, 41, 59, 0.9);
+    background-color: #090d14;
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(249, 115, 22, 0.95), 0 0 120px rgba(234, 88, 12, 0.75), inset 0 0 40px rgba(251, 146, 60, 0.6);
+    border-color: rgba(251, 146, 60, 1);
+    background-color: rgba(67, 20, 7, 0.9);
+    filter: brightness(1.35) contrast(1.15);
+  }
+}
+
+@keyframes chonggang-bg-light-pulse {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+.chonggang-unseal-flashing {
+  animation: chonggang-unseal-flash 0.5s ease-in-out 4 !important;
+  z-index: 25 !important;
+}
+
+.chonggang-bg-light-flashing {
+  animation: chonggang-bg-light-pulse 0.5s ease-in-out 4 !important;
+}
+
+/* Mouse Hover Card Dynamic Highlighting & 3D Lift */
+.spatial-card-hover {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease, filter 0.4s ease;
+}
+
+.spatial-card-hover:hover {
+  transform: perspective(600px) rotateY(0deg) translateZ(0px) !important;
+  border-top: 1px solid rgba(251, 191, 36, 0.75) !important;
+  border-left: 1px solid rgba(251, 191, 36, 0.5) !important;
+  border-right: 1px solid rgba(251, 191, 36, 0.35) !important;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.35) !important;
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.95), 0 0 35px rgba(251, 191, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  filter: brightness(1.12) contrast(1.05);
+}
+
+/* Selected Location Active State */
+.spatial-card-selected {
+  --card-z: 0px;
+  transform: perspective(600px) rotateY(0deg) translateZ(var(--card-z));
+  border-top: 1px solid rgba(251, 191, 36, 0.55);
+  border-left: 1px solid rgba(251, 191, 36, 0.35);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  border-right: 1px solid rgba(0, 0, 0, 0.8);
+  box-shadow: 0 35px 70px -10px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Quiet Architectural Elevation Track Line */
+.elevation-axis-line {
+  position: absolute;
+  left: 14px;
+  top: 24px;
+  bottom: 24px;
+  width: 3px;
+  background: linear-gradient(to bottom, #d4af37, #94a3b8, #64748b, #334155);
+  border-radius: 1.5px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 640px) {
+  .elevation-axis-line {
+    left: 30px;
+  }
+}
+
+/* ============================================================
+   Cyberpunk Scene-Specific Dialogue HUD Frames
+   ============================================================ */
+
+/* 1. 解放碑: Jade Cyber / Digital Bamboo */
+.dialogue-frame-jiefangbei {
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(16, 185, 129, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.35), inset 0 0 30px rgba(16, 185, 129, 0.08);
+  background: linear-gradient(135deg, rgba(6, 26, 22, 0.42) 0%, rgba(3, 15, 18, 0.52) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+.dialogue-frame-jiefangbei .hud-accent-badge {
+  background: rgba(6, 78, 59, 0.6);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 2. 李子坝: High-Altitude Monorail Cyan */
+.dialogue-frame-liziba {
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(6, 182, 212, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.35), inset 0 0 30px rgba(6, 182, 212, 0.08);
+  background: linear-gradient(135deg, rgba(6, 26, 42, 0.42) 0%, rgba(3, 14, 28, 0.52) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+.dialogue-frame-liziba .hud-accent-badge {
+  background: rgba(22, 78, 99, 0.6);
+  color: #22d3ee;
+  border: 1px solid rgba(6, 182, 212, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 3. 洪崖洞: Stilt-House Lantern Amber/Crimson */
+.dialogue-frame-hongyadong {
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(245, 158, 11, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.35), inset 0 0 30px rgba(245, 158, 11, 0.08);
+  background: linear-gradient(135deg, rgba(32, 20, 10, 0.45) 0%, rgba(18, 10, 8, 0.55) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+.dialogue-frame-hongyadong .hud-accent-badge {
+  background: rgba(120, 53, 15, 0.6);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 4. 重钢遗址: Molten Industrial High-Voltage Orange */
+.dialogue-frame-chonggang {
+  border: 1px solid rgba(251, 146, 60, 0.5);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 50px rgba(249, 115, 22, 0.28), inset 0 1px 2px rgba(255, 255, 255, 0.35), inset 0 0 30px rgba(249, 115, 22, 0.08);
+  background: linear-gradient(135deg, rgba(34, 18, 10, 0.45) 0%, rgba(20, 10, 8, 0.55) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
+.dialogue-frame-chonggang .hud-accent-badge {
+  background: rgba(124, 45, 18, 0.65);
+  color: #fdba74;
+  border: 1px solid rgba(249, 115, 22, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================
+   Global High-Impact Frosted Glass (Glassmorphism) Utility
+   ============================================================ */
+.cyber-glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(15, 23, 42, 0.40) 60%, rgba(6, 10, 20, 0.55) 100%);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.04);
+}
+
+/* Cyberpunk Dialogue Scanline Overlay */
+.dialogue-scanline-bg {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+}
+
+/* Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #06080d;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ============================================================
+   Cyber Audio Visualizer & Medal Halo Animations
+   ============================================================ */
+@keyframes eq-bounce-1 {
+  0%, 100% { height: 18%; }
+  50% { height: 95%; }
+}
+@keyframes eq-bounce-2 {
+  0%, 100% { height: 40%; }
+  50% { height: 80%; }
+}
+@keyframes eq-bounce-3 {
+  0%, 100% { height: 25%; }
+  50% { height: 100%; }
+}
+@keyframes eq-bounce-4 {
+  0%, 100% { height: 50%; }
+  50% { height: 85%; }
+}
+
+.animate-eq-1 { animation: eq-bounce-1 0.75s ease-in-out infinite; }
+.animate-eq-2 { animation: eq-bounce-2 1.05s ease-in-out infinite 0.15s; }
+.animate-eq-3 { animation: eq-bounce-3 0.65s ease-in-out infinite 0.3s; }
+.animate-eq-4 { animation: eq-bounce-4 0.95s ease-in-out infinite 0.1s; }
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 24s linear infinite;
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+@keyframes cyber-shimmer {
+  0% { transform: translateX(-150%); }
+  50%, 100% { transform: translateX(200%); }
+}
+.animate-shimmer {
+  animation: cyber-shimmer 3s ease-in-out infinite;
+}
+
+/* ============================================================
+   NPC Talking Dynamic Animations & Soundwave Halo
+   ============================================================ */
+@keyframes npc-talk-breathing {
+  0% {
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.4));
+  }
+  50% {
+    transform: scale(1.045) translateY(-1.5px);
+    filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.7));
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.4));
+  }
+}
+
+@keyframes npc-talk-ripple {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.9;
+  }
+  60% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.24);
+    opacity: 0;
+  }
+}
+
+@keyframes npc-hologram-scan {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(200%);
+    opacity: 0;
+  }
+}
+
+.npc-avatar-speaking {
+  animation: npc-talk-breathing 1.1s ease-in-out infinite !important;
+  position: relative;
+  z-index: 10;
+}
+
+.npc-soundwave-ripple {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  pointer-events: none;
+  animation: npc-talk-ripple 1.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.npc-soundwave-ripple-2 {
+  position: absolute;
+  inset: -7px;
+  border-radius: inherit;
+  border: 1.5px dashed currentColor;
+  pointer-events: none;
+  animation: npc-talk-ripple 1.4s cubic-bezier(0.25, 1, 0.5, 1) infinite 0.45s;
+}
+
+.npc-hologram-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.npc-hologram-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+  animation: npc-hologram-scan 1.6s ease-in-out infinite;
+}
+
+/* Talking Equalizer Bars */
+@keyframes eq-bounce-1 {
+  0%, 100% { height: 4px; }
+  50% { height: 12px; }
+}
+@keyframes eq-bounce-2 {
+  0%, 100% { height: 12px; }
+  50% { height: 5px; }
+}
+@keyframes eq-bounce-3 {
+  0%, 100% { height: 6px; }
+  50% { height: 14px; }
+}
+
+.animate-eq-1 {
+  animation: eq-bounce-1 0.45s ease-in-out infinite;
+}
+.animate-eq-2 {
+  animation: eq-bounce-2 0.38s ease-in-out infinite;
+}
+.animate-eq-3 {
+  animation: eq-bounce-3 0.52s ease-in-out infinite;
+}
+
+
+
