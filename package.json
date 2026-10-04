@@ -1,7 +1,13 @@
 {
-  "name": "cyber-chongqing-game",
+  "name": "earth-civilization-online-shancheng-origin-2050",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Earth Civilization Online: ShanCheng Origin 2050 - AI Native RPG Cyber Chongqing",
+  "homepage": "https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

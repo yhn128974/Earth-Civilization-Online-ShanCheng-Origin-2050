@@ -1,8 +1,27 @@
 # 🌐 《地球文明Online：山城溯源 2050》
 
-### (Earth Civilization Online: ShanCheng Origin 2050)
+### Earth Civilization Online: ShanCheng Origin 2050
 
 <div align="center">
+
+<img src="public/cover.jpg" alt="Earth Civilization Online Cover" width="860" />
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050)
+[![GitHub Stars](https://img.shields.io/github/stars/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050?style=for-the-badge&logo=github&color=ffd700)](https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050?style=for-the-badge&logo=github&color=60a5fa)](https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050/network/members)
+[![React](https://img.shields.io/badge/React-19.2-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8.2-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vite.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![AI Engine](https://img.shields.io/badge/Multi__LLM-DeepSeek_%7C_Qwen_%7C_Gemini_%7C_OpenAI-1C64F2?style=for-the-badge&logo=openai&logoColor=white)](#ai-engine)
+[![Audio](https://img.shields.io/badge/Audio-0MB_Web_Audio_%2B_68_Dialect_Voices-D97706?style=for-the-badge&logo=soundcharts&logoColor=white)](#audio-engine)
+
+**“以 AI 原生叙事重构 8D 赛博山城时空，在 2050 智能危机中寻回人类文明精神火种。”**
+
+[🌟 GitHub 源码仓库](https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050) · [🗺️ 8D 垂直时空](#elevation-map) · [🔄 核心游戏循环](#game-loop) · [🧠 AI 容灾中枢](#ai-engine) · [🕹️ 四大小游戏](#mini-games) · [🏆 分支结局](#endings) · [🎼 物理音频](#audio-engine) · [🏛️ 目录架构](#architecture) · [⚡ 极速上手](#quick-start) · [🤝 参与贡献](#contributing) · [📄 开源协议](#license)
+
+</div>
 
 ---
 
@@ -10,16 +29,18 @@
 
 ## 📖 项目简介与核心优势矩阵 (Overview & Advantage Matrix)
 
-《地球文明Online：山城溯源 2050》是一款**深度融合“非遗文脉传承 × 8D 立体时空构架 × AI 原生叙事与自研互动引擎”的完整 Web 级 RPG 作品**。设定在公元 2050 年通用人工智能（AGI）失控引发人类文明精神虚无的危机纪元，玩家化身特遣专员接入 8D 赛博山城重庆，通过穿梭三大历史纪元、与搭载地道方言的驻留智能体展开哲学攻防与情感唤醒，收集文明宝典碎片，最终在地下百年高炉解封终极历史共鸣大考。
+《地球文明Online：山城溯源 2050》（Earth Civilization Online: ShanCheng Origin 2050）是一款**深度融合“巴渝非遗文脉传承 × 8D 立体垂直时空构架 × AI 原生叙事与自研动力学互动引擎”的开源 Web 级 RPG 作品**。
 
-| 优势维度        | 传统 Web / 问答套壳应用          | 本项目核心突破与技术壁垒                                                             |
-| :-------------- | :------------------------------- | :----------------------------------------------------------------------------------- |
-| **🏙️ 空间建构** | 平面网页、单调信息流展示         | **420 米真实落差 8D 垂直时空坐标轴**，虚实映射四大纪元地标                           |
-| **🧠 AI 架构**  | 单一依赖国际 API，易受阻断       | **双国内直连 + 双国际顶尖一键热插拔**，独创 **“全断网零报错”三级离线自愈中枢**       |
-| **🕹️ 互动体验** | 单纯文字点选或单选题             | **四大全自研动力学小游戏**（扁担重心平衡、单轨减震调速、九宫火候温区、高炉热力模锻） |
-| **🎼 声学工程** | 臃肿数十兆的静态音频文件，加载慢 | **0MB 外部声学包体积**，纯原生 **Web Audio API** 实时数学合成物理动态声场            |
-| **🏆 叙事厚度** | 线性固定脚本，体验单一           | **四大多分支结局演播**、川剧面具多重人格切换与生成式防伪加密数字勋章                 |
-| **📱 工程性能** | 资源体积大、手机排版易错位       | **React 19.2 + Vite 8** 秒级冷启，完美响应 PC 宽屏、平板及手机窄屏触控               |
+故事设定在公元 2050 年，通用人工智能（AGI）失控引发人类文明精神虚无的危机纪元。玩家化身文明特遣专员，神经漫游接入 8D 赛博山城重庆，在李子坝水运智控站、解放碑地表前哨站、洪崖洞悬崖吊脚楼与重钢工业深渊之间穿梭，与搭载地道方言的驻留数字智能体展开哲学攻防与情感唤醒，收集文明宝典碎片，最终在地下百年高炉解封终极历史共鸣大考。
+
+| 优势维度 | 传统 Web / 问答套壳应用 | 本项目核心突破与技术壁垒 |
+| :--- | :--- | :--- |
+| **🏙️ 空间建构** | 平面网页、单调信息流展示 | **420 米真实落差 8D 垂直时空坐标轴**，虚实映射四大纪元地标 |
+| **🧠 AI 架构** | 单一依赖国际 API，易受阻断 | **双国内直连 (DeepSeek/通义千问) + 双国际顶尖 (Gemini/OpenAI) 一键热插拔**，独创 **“全断网零报错”三级离线自愈中枢** |
+| **🕹️ 互动体验** | 单纯文字点选或单选题 | **四大全自研动力学小游戏**（扁担重心平衡、单轨减震调速、九宫火候温区、高炉热力模锻） |
+| **🎼 声学工程** | 臃肿数十兆的静态音频文件，加载慢 | **0MB 外部声学包体积**，纯原生 **Web Audio API** 实时数学合成物理动态声场 + **68+ 条全量川渝方言高清原声** |
+| **🏆 叙事厚度** | 线性固定脚本，体验单一 | **四大多分支结局演播**、川剧面具多重人格切换与生成式防伪加密数字勋章 |
+| **📱 工程性能** | 资源体积大、手机排版易错位 | **React 19.2 + Vite 8** 秒级冷启，完美响应 PC 宽屏、平板及手机窄屏触控 |
 
 ---
 
@@ -142,13 +163,13 @@ flowchart LR
     DS & QW & GM & OA --> Render
 ```
 
-| 模型提供商                  | 接入特性                | 平均时延 | 适用场景与接入地址                                                                            |
-| :-------------------------- | :---------------------- | :------: | :-------------------------------------------------------------------------------------------- |
-| **DeepSeek (V3 / R1)**      | 国内高速直连 · 免翻墙   | `~300ms` | **国内网络强烈推荐**，逻辑思辨极佳 · [DeepSeek 平台](https://platform.deepseek.com)           |
-| **阿里通义千问 (Qwen 2.5)** | 阿里云国内骨干网直连    | `~260ms` | **企业级高并发稳定**，合规安全 · [阿里云百炼平台](https://bailian.console.aliyun.com)         |
-| **Google Gemini (3.1/2.5)** | 需代理环境 / 出厂内置   | `~450ms` | **原生官方信标默认支持** · [Google AI Studio](https://aistudio.google.com)                    |
-| **OpenAI (GPT-4o)**         | 需代理环境 / 支持反代   | `~500ms` | **全球通用基准**，支持 One-API 与自定义 Base URL · [OpenAI 官网](https://platform.openai.com) |
-| **离线方言拟真引擎**        | **0 网络依赖 (全断网)** |  `0ms`   | **绝对防报错保底**，内置数百条契合剧情深度的鲜活方言逻辑库                                    |
+| 模型提供商 | 接入特性 | 平均时延 | 适用场景与接入地址 |
+| :--- | :--- | :---: | :--- |
+| **DeepSeek (V3 / R1)** | 国内高速直连 · 免翻墙 | `~300ms` | **国内网络强烈推荐**，逻辑思辨极佳 · [DeepSeek 开放平台](https://platform.deepseek.com) |
+| **阿里通义千问 (Qwen 2.5)** | 阿里云国内骨干网直连 | `~260ms` | **企业级高并发稳定**，合规安全 · [阿里云百炼平台](https://bailian.console.aliyun.com) |
+| **Google Gemini (3.1/2.5)** | 需代理环境 / 出厂内置 | `~450ms` | **原生官方信标默认支持** · [Google AI Studio](https://aistudio.google.com) |
+| **OpenAI (GPT-4o)** | 需代理环境 / 支持反代 | `~500ms` | **全球通用基准**，支持 One-API 与自定义 Base URL · [OpenAI 官网](https://platform.openai.com) |
+| **离线方言拟真引擎** | **0 网络依赖 (全断网)** | `0ms` | **绝对防报错保底**，内置数百条契合剧情深度的鲜活方言逻辑库 |
 
 ---
 
@@ -215,20 +236,20 @@ graph TD
     HermitEnd --> Cert3["📜 颁发 CERT // 2050-HERMIT-KNIGHT-007 勋章"]
 ```
 
-| 结局名称                       |   分支类型   | 达成前置条件                                                                   | 核心演播与专属声乐                                                                       | 官方勋章认证                          |
-| :----------------------------- | :----------: | :----------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------ |
-| **🌟 盛世如愿 · 人机共生纪元** | **正统终局** | 答题正确率 ≥ 75%                                                               | 四大守护者全息投影屹立解放碑顶，全球危机终结，合奏《如愿 · 山城溯源》原声诗歌            | `★ 官方终极认证 · 文明溯源特级专员 ★` |
-| **⚡ 量子飞升 · 赛博龙魂纪元** | **终极隐藏** | **全局零失误** + **大考 100% 满分** + **装备巴渝非遗造物** (川剧面具/聚能底料) | 1500°C 量子高炉超临界爆发，4096 纳米面具覆写全球死锁，赛博金龙啸聚两江，掌控二级恒星算力 | `★ 官方隐藏分支 · 算力狂飙领航者 ★`   |
-| **🍵 沧海一笑 · 雾都大侠行**   | **哲学归隐** | 在洪崖洞悬崖茶肆选择放弃算力争霸，留驻人间烟火                                 | 远离冷光算力角逐，防空洞悬崖深处盖碗翻扣架船，守望万家灯火，古琴泛音《沧海一笑》         | `★ 特殊哲学分支 · 防空洞数字大侠 ★`   |
-| **🔋 义体竭尽 · 应急复苏协议** | **故障复苏** | 探索途中义体能量 (Energy) 耗尽归零                                             | 棒棒 88 号与盖碗姐送达滚烫油茶与备用电池，启动休眠保护，一键满血复苏继续征程             | 紧急复苏重整旗鼓                      |
+| 结局名称 | 分支类型 | 达成前置条件 | 核心演播与专属声乐 | 官方勋章认证 |
+| :--- | :---: | :--- | :--- | :--- |
+| **🌟 盛世如愿 · 人机共生纪元** | **正统终局** | 答题正确率 ≥ 75% | 四大守护者全息投影屹立解放碑顶，全球危机终结，合奏《如愿 · 山城溯源》原声诗歌 | `★ 官方终极认证 · 文明溯源特级专员 ★` |
+| **⚡ 量子飞升 · 赛博龙魂纪元** | **终极隐藏** | **全局零失误** + **大考 100% 满分** + **装备巴渝非遗造物** (川剧面具/聚能底料) | 1500°C 量子高炉超临界爆发，4096 纳米面具覆写全球死锁，赛博金龙啸聚两江，掌控二级恒星算力 | `★ 官方隐藏分支 · 算力狂飙领航者 ★` |
+| **🍵 沧海一笑 · 雾都大侠行** | **哲学归隐** | 在洪崖洞悬崖茶肆选择放弃算力争霸，留驻人间烟火 | 远离冷光算力角逐，防空洞悬崖深处盖碗翻扣架船，守望万家灯火，古琴泛音《沧海一笑》 | `★ 特殊哲学分支 · 防空洞数字大侠 ★` |
+| **🔋 义体竭尽 · 应急复苏协议** | **故障复苏** | 探索途中义体能量 (Energy) 耗尽归零 | 棒棒 88 号与盖碗姐送达滚烫油茶与备用电池，启动休眠保护，一键满血复苏继续征程 | 紧急复苏重整旗鼓 |
 
 ---
 
 <a id="audio-engine"></a>
 
-## 🎼 0MB 纯物理程序化音频引擎 (Procedural Audio Engine)
+## 🎼 0MB 纯物理程序化音频引擎与全量方言语音 (Audio & Voice Engine)
 
-彻底告别动辄数十兆的臃肿静态音频资源，全链路采用浏览器原生 **Web Audio API** 纯数学计算生成：
+彻底告别动辄数十兆的臃肿静态音频资源，全链路采用浏览器原生 **Web Audio API** 纯数学计算生成，并内置 68+ 条专属地道川渝方言真人级语音包：
 
 ```mermaid
 graph LR
@@ -243,6 +264,9 @@ graph LR
     Sub4 --> Sound4[🚝 穿楼单轨高架变频电机轰鸣与减震]
 ```
 
+- **全量地道方言语音**：包含棒棒 88 号、盖碗姐、钢铁之魂、主脑 AI 零号机等角色的丰富川渝地道方言配音（位于 `public/audio/`）。
+- **终局情感原声**：通关专属合奏主题乐章《如愿 · 山城溯源》多重声学渲染。
+
 ---
 
 <a id="architecture"></a>
@@ -250,13 +274,15 @@ graph LR
 ## 🏛️ 项目工程目录架构 (Architecture & File Tree)
 
 ```
-cyber-chongqing-game/
-├── public/                       # 静态高清场景与官方视觉资产
+Earth-Civilization-Online-ShanCheng-Origin-2050/
+├── public/                       # 静态高清场景、官方视觉资产与语音库
 │   ├── cover.jpg                 # 游戏主视觉海报
 │   ├── banner.jpg                # 2050 赛博山城宽幅全景
 │   ├── chongqing_medal.jpg       # 终局防伪荣誉勋章纹章
 │   ├── liziba.jpg / jiefangbei.jpg / hongyadong.jpg / chonggang.jpg
-│   └── avatar_*.jpg              # 四大 NPC 官方全息头像
+│   ├── avatar_*.jpg              # 四大 NPC 官方全息头像
+│   ├── audio/                    # 68+ 条四大角色专属地道川渝方言全语音库与主题曲
+│   └── video/                    # 官方实机演示视音频
 ├── src/
 │   ├── components/               # 核心业务组件库
 │   │   ├── minigames/            # 四大非遗互动小游戏自研引擎
@@ -271,7 +297,10 @@ cyber-chongqing-game/
 │   │   ├── LocationMap.tsx       # 8D 垂直落差时空星图
 │   │   ├── InventoryModal.tsx    # 战术包裹与巴渝非遗工坊 (面具/底料熔铸)
 │   │   ├── OpeningCinematic.tsx  # 3D 景深序幕视效
+│   │   ├── DistressedGlassOverlay.tsx # 赛博战术磨砂毛玻璃护盾覆层
 │   │   └── Navbar.tsx            # 顶部实时状态、能量槽与模型快速指示器
+│   ├── constants/
+│   │   └── gameConfig.ts         # 游戏核心数值、阶段常量与预设路由
 │   ├── data/
 │   │   └── gameData.ts           # 地标、NPC 设定、考核题库与非遗道具数据
 │   ├── types/
@@ -281,10 +310,16 @@ cyber-chongqing-game/
 │   │   ├── audio.ts              # 0MB Web Audio 物理声学引擎与歌词唱诵器
 │   │   └── security.ts           # 多态加密安全信标编解码工具
 │   ├── App.tsx                   # 全局状态调度机与游戏生命周期引擎
-│   └── main.tsx                  # 应用入口点
+│   ├── main.tsx                  # 应用入口点
+│   └── index.css                 # 赛博朋克深邃质感与粒子动效设计系统
+├── scripts/                      # 配音合成与数据生成工作流
+│   ├── generate_npc_voices.mjs   # NPC 方言全语音自动生成脚本
+│   └── generate_steel_voices.mjs # 钢铁守望者专属重工音色生成脚本
 ├── index.html                    # 页面外壳与视口配置
 ├── package.json                  # 依赖清单 (React 19 + Vite 8 + TailwindCSS 4)
-└── vite.config.ts                # Vite 极速构建配置
+├── vite.config.ts                # Vite 极速构建配置
+├── LICENSE                       # MIT 开源许可证文件
+└── README.md                     # 项目技术全景与架构指南
 ```
 
 ---
@@ -298,30 +333,34 @@ cyber-chongqing-game/
 确保本机安装了 Node.js（推荐 `v18.0.0` 或更高版本）：
 
 ```bash
-# 克隆代码仓库并安装依赖
-git clone https://github.com/your-username/cyber-chongqing-game.git
-cd cyber-chongqing-game
+# 1. 克隆 GitHub 仓库
+git clone https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050.git
+
+# 2. 进入项目工作目录
+cd Earth-Civilization-Online-ShanCheng-Origin-2050
+
+# 3. 安装依赖包
 npm install
 
-# 启动本地开发服务 (支持毫秒级热更新)
+# 4. 启动本地热重载开发服务器
 npm run dev
 ```
 
-启动成功后，浏览器打开 `http://localhost:5173` 即可开箱即玩！
+启动成功后，浏览器访问 `http://localhost:5173` 即可开箱即玩！
 
-### 2. 生产级打包
+### 2. 生产级打包与预览
 
 ```bash
-# 执行类型检查与极速构建打包
+# 执行 TypeScript 类型校验与静态压缩构建
 npm run build
 
-# 本地预览生产构建产物
+# 本地快速预览构建产物
 npm run preview
 ```
 
 ### 3. 可选环境变量配置
 
-本项目具备**零门槛开箱即玩**特性，本地无需配置 `.env` 即可畅玩（内置加密信标与离线自愈引擎）。如需绑定自定义 API Key，可配置 `.env`：
+本项目具备**零门槛开箱即玩**特性，本地无需配置 `.env` 即可畅玩（内置加密信标与离线自愈引擎）。如需绑定自定义 API Key，可复制并配置 `.env`：
 
 ```ini
 # --- [国内主流大模型配置 (推荐免代理用户)] ---
@@ -341,8 +380,26 @@ VITE_OPENAI_API_KEY=your_openai_api_key_here
 
 ---
 
+<a id="contributing"></a>
+
+## 🤝 参与贡献与社区 (Contributing & Star History)
+
+欢迎提交 Issue 与 Pull Request 共同完善巴渝赛博世界！
+
+1. Fork 本项目到你的 GitHub：[https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050](https://github.com/yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050)
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交代码更改 (`git commit -m 'feat: Add some AmazingFeature'`)
+4. 推送分支 (`git push origin feature/AmazingFeature`)
+5. 在 GitHub 发起 Pull Request
+
+如果你喜欢这个项目，欢迎点亮右上角的 ⭐️ **Star** 支持！
+
+[![Star History Chart](https://api.star-history.com/svg?repos=yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050&type=Date)](https://star-history.com/#yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050&Date)
+
+---
+
 <a id="license"></a>
 
 ## 📄 开源许可证 (License)
 
-本项目基于 [MIT License](LICENSE) 开源协议分发与使用。
+本项目基于 [MIT License](LICENSE) 开源协议分发与使用。欢迎自由交流与非商业化学习研究！
