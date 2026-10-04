@@ -379,6 +379,8 @@ VITE_OPENAI_API_KEY=your_openai_api_key_here
 
 如果你喜欢这个项目，欢迎点亮右上角的 ⭐️ **Star** 支持！
 
+[![Star History Chart](https://api.star-history.com/svg?repos=yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050&type=Date)](https://star-history.com/#yhn128974/Earth-Civilization-Online-ShanCheng-Origin-2050&Date)
+
 ---
 
 <a id="license"></a>
