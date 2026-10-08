@@ -1086,10 +1086,10 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
             {/* Neural Memory Drawer Button */}
             <button
               onClick={() => setShowMemoryDrawer(!showMemoryDrawer)}
-              className={`px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-colors flex items-center gap-1 shadow-sm whitespace-nowrap cursor-pointer ${
+              className={`px-3 py-1 rounded-full text-[11px] font-medium border transition-all flex items-center gap-1 shadow-sm whitespace-nowrap cursor-pointer active:scale-95 ${
                 showMemoryDrawer
                   ? 'bg-purple-900/80 text-purple-200 border-purple-500'
-                  : 'bg-slate-900 hover:bg-slate-800 text-purple-300 border-purple-500/30'
+                  : 'bg-white/[0.08] hover:bg-white/[0.14] text-purple-300 border-purple-500/35 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)]'
               }`}
               title="查看当前智能体短期与长期神经记忆"
             >
@@ -1116,10 +1116,10 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                     setBattleCompleted(false);
                     setBattleLogs(['【攻防就绪】接入失控神经逻辑端口，准备进行策略纠偏！']);
                   }}
-                  className={`px-2.5 py-1 rounded-xl text-[11px] font-bold border transition-all flex items-center gap-1 shadow-md whitespace-nowrap cursor-pointer ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold border transition-all flex items-center gap-1 shadow-sm whitespace-nowrap cursor-pointer active:scale-95 ${
                     isHackingMode
                       ? 'bg-rose-600 text-white border-rose-400 animate-pulse'
-                      : 'bg-rose-950/90 hover:bg-rose-900 text-rose-300 border-rose-500/50'
+                      : 'bg-rose-950/80 hover:bg-rose-900/90 text-rose-300 border-rose-500/40'
                   }`}
                   title="进入失控AI逻辑纠偏攻防战"
                 >
@@ -1154,10 +1154,10 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                 <button
                   onClick={handleTipNpcWithCredits}
                   disabled={isDisabled}
-                  className={`px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-colors flex items-center gap-1 shadow-sm whitespace-nowrap ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-medium border transition-all flex items-center gap-1 shadow-sm whitespace-nowrap active:scale-95 ${
                     isDisabled
                       ? 'bg-slate-900/60 text-slate-500 border-slate-800 cursor-not-allowed opacity-60'
-                      : 'bg-slate-900 hover:bg-slate-800 text-amber-300 border-amber-500/30 cursor-pointer'
+                      : 'bg-white/[0.08] hover:bg-white/[0.14] text-amber-300 border-amber-500/35 cursor-pointer shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)]'
                   }`}
                   title={tipTooltip}
                 >
@@ -1167,13 +1167,13 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
               );
             })()}
 
-            {/* Favorability Badge + Progress Bar */}
-            <div className="flex items-center gap-1.5 bg-[#06090e] px-2.5 py-1 rounded-xl border border-slate-800 shadow-inner shrink-0">
+            {/* Favorability Capsule Badge + Progress Bar */}
+            <div className="flex items-center gap-1.5 bg-black/45 backdrop-blur-xl px-2.5 py-1 rounded-full border border-white/15 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)] shrink-0">
               <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500/80 shrink-0" />
               <span className="text-[11px] font-bold text-amber-300 font-mono whitespace-nowrap">{currentFav}/100</span>
-              <div className="w-10 sm:w-14 bg-slate-900 rounded-full h-1.5 border border-slate-800 overflow-hidden shrink-0">
+              <div className="w-10 sm:w-14 bg-slate-900/90 rounded-full h-1.5 border border-white/10 overflow-hidden shrink-0">
                 <div
-                  className="bg-gradient-to-r from-amber-600 to-amber-400 h-full transition-all duration-500"
+                  className="bg-gradient-to-r from-amber-600 to-amber-400 h-full transition-all duration-500 rounded-full"
                   style={{ width: `${Math.min(100, currentFav)}%` }}
                 />
               </div>
@@ -1182,38 +1182,38 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
               )}
             </div>
 
-            {/* Desktop Close Button */}
+            {/* Desktop Circular iOS Close Button */}
             <button
               onClick={() => {
                 window.speechSynthesis?.cancel();
                 onClose();
               }}
-              className="p-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white transition-colors border border-slate-700 hover:border-slate-500 shrink-0 cursor-pointer ml-1"
+              className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] shrink-0 cursor-pointer ml-1"
               title="关闭对话"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
 
           {/* Mobile Right Controls: Always pinned Close [X] + Compact Favorability Badge */}
           <div className="flex md:hidden items-center gap-1.5 shrink-0 ml-auto">
             {/* Compact Mobile Favorability */}
-            <div className="flex items-center gap-1 bg-[#06090e] px-2 py-1 rounded-lg border border-slate-800 text-[10px] font-mono font-bold text-amber-300 shadow-inner">
+            <div className="flex items-center gap-1 bg-black/45 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/15 text-[10px] font-mono font-bold text-amber-300 shadow-inner">
               <Heart className="w-3 h-3 text-rose-500 fill-rose-500/80 shrink-0" />
               <span>{currentFav}</span>
             </div>
 
-            {/* Mobile Close Button - ALWAYS visible & accessible */}
+            {/* Mobile Close Button - Circular iOS pill */}
             <button
               onClick={() => {
                 window.speechSynthesis?.cancel();
                 onClose();
               }}
-              className="p-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 active:scale-95 text-slate-200 hover:text-white border border-slate-700/80 hover:border-slate-500 shrink-0 cursor-pointer shadow-md"
+              className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-slate-200 hover:text-white border border-white/20 flex items-center justify-center shrink-0 cursor-pointer shadow-sm transition-all"
               title="关闭对话"
               aria-label="关闭对话"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
@@ -1935,11 +1935,11 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                       key={choice.id}
                       onClick={() => handleSelectChoice(choice)}
                       disabled={isTyping}
-                      className={`p-3 rounded-xl border text-left text-xs font-medium transition-all flex flex-col justify-between gap-2.5 backdrop-blur-xl ${
+                      className={`p-3.5 rounded-2xl border text-left text-xs font-medium transition-all duration-200 active:scale-[0.98] flex flex-col justify-between gap-2.5 backdrop-blur-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] ${
                         isMiniGameChoice
-                          ? 'bg-gradient-to-br from-amber-950/60 via-amber-900/40 to-slate-900/80 hover:from-amber-900/70 hover:via-amber-800/50 border-amber-500/60 hover:border-amber-400/80 text-amber-100 shadow-md ring-1 ring-amber-500/30'
+                          ? 'bg-gradient-to-br from-amber-950/70 via-amber-900/50 to-slate-900/80 hover:from-amber-900/80 hover:via-amber-800/60 border-amber-400/60 hover:border-amber-300 text-amber-100 shadow-[0_4px_20px_rgba(245,158,11,0.25)] ring-1 ring-amber-400/40'
                           : hasReqItem
-                          ? 'bg-gradient-to-br from-slate-900/50 via-[#0d1424]/60 to-[#080d19]/70 hover:bg-slate-800/60 border-white/10 hover:border-amber-500/50 text-slate-200 shadow-sm'
+                          ? 'bg-gradient-to-br from-white/[0.12] via-slate-900/50 to-slate-950/70 hover:bg-white/[0.18] border-white/20 hover:border-amber-400/60 text-slate-100 hover:text-white shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
                           : 'bg-black/30 border-white/5 text-slate-600 cursor-not-allowed opacity-50'
                       }`}
                     >
@@ -1947,8 +1947,8 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                         {isMiniGameChoice && <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5 animate-pulse" />}
                         {choice.text}
                       </span>
-                      <span className={`self-end text-[10px] px-2 py-0.5 rounded bg-slate-900 border whitespace-nowrap font-mono font-medium ${
-                        isMiniGameChoice ? 'text-amber-300 border-amber-500/60' : `${sceneTheme.textAccent} ${sceneTheme.borderAccent}`
+                      <span className={`self-end text-[10px] px-2.5 py-0.5 rounded-full border whitespace-nowrap font-mono font-medium shadow-sm ${
+                        isMiniGameChoice ? 'bg-amber-950/80 text-amber-300 border-amber-500/60' : `bg-black/40 backdrop-blur-md ${sceneTheme.textAccent} ${sceneTheme.borderAccent}`
                       }`}>
                         {isMiniGameChoice
                           ? '🎮 实操彩蛋'
@@ -2028,7 +2028,7 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                     ? '🎙️ 正在录音中... 说完后请点击右侧【结束录音并发送】'
                     : `向 ${npc.name} 输入对话心得 (自主发言好感度 +${isBattleOverridden ? '2 (含破壁加成)' : '1'}，最多 200 字，支持键盘输入或语音)...`
                 }
-                className="flex-1 bg-black/40 backdrop-blur-md border border-white/10 focus:border-amber-400/50 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none transition-colors placeholder:text-slate-500 disabled:opacity-75"
+                className="flex-1 bg-black/45 backdrop-blur-2xl border border-white/15 focus:border-amber-400/60 rounded-full px-4 py-2.5 text-xs text-slate-100 focus:outline-none transition-all placeholder:text-slate-400 disabled:opacity-75 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]"
               />
 
               {/* Explicit Player-Controlled Push-To-Talk Button */}
@@ -2036,7 +2036,7 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                 <button
                   type="button"
                   onClick={stopRecordingAndSend}
-                  className="px-4 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(244,63,94,0.6)] cursor-pointer shrink-0 animate-pulse border border-rose-400"
+                  className="px-4 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-full transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(244,63,94,0.6)] cursor-pointer shrink-0 animate-pulse border border-rose-400 active:scale-95"
                   title="点击立即结束语音录入并自动发送给 NPC"
                 >
                   <Square className="w-3.5 h-3.5 fill-white" />
@@ -2046,7 +2046,7 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                 <button
                   type="button"
                   onClick={toggleSpeechRecognition}
-                  className="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-300 hover:text-amber-200 border border-slate-700 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm"
+                  className="px-3.5 py-2.5 bg-white/[0.08] hover:bg-white/[0.15] text-amber-300 hover:text-amber-200 border border-white/15 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm active:scale-95 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)]"
                   title="点击开始语音录入 (您决定何时结束，亦可按键盘 ~ 键)"
                 >
                   <Mic className="w-4 h-4 text-amber-400" />
@@ -2059,10 +2059,10 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                   type="button"
                   onClick={handleSendCustomText}
                   disabled={!inputPrompt.trim() || isTyping}
-                  className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 disabled:opacity-50 text-slate-200 font-medium text-xs rounded-xl transition-colors flex items-center gap-2 shrink-0 cursor-pointer"
+                  className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 text-slate-950 font-bold text-xs rounded-full transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-[0_2px_12px_rgba(245,158,11,0.35)] active:scale-95"
                 >
                   <span>发送</span>
-                  <Send className="w-4 h-4" />
+                  <Send className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>

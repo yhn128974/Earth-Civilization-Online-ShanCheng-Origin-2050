@@ -241,25 +241,43 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-xl select-none"
       role="dialog"
       aria-modal="true"
     >
-      <div className="relative w-full max-w-2xl cyber-glass rounded-2xl border border-cyan-500/40 shadow-2xl p-5 sm:p-6 max-h-[92vh] flex flex-col overflow-hidden">
+      {/* Radiant Cyan Ambient Glow behind modal */}
+      <div
+        className="absolute w-[600px] h-[450px] rounded-full blur-[100px] opacity-25 pointer-events-none animate-pulse"
+        style={{
+          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(59, 130, 246, 0.25) 50%, transparent 75%)',
+          animationDuration: '6s',
+        }}
+      />
+
+      <div className="relative w-full max-w-2xl rounded-2xl border border-cyan-500/40 shadow-[0_25px_70px_rgba(0,0,0,0.8),0_0_50px_rgba(6,182,212,0.18),inset_0_1px_1px_rgba(255,255,255,0.25)] bg-gradient-to-b from-[#0a162b]/80 via-[#071020]/85 to-[#040814]/90 backdrop-blur-2xl p-5 sm:p-6 max-h-[92vh] flex flex-col overflow-hidden dialogue-scanline-bg">
+        {/* Specular Glass Top Highlight Edge */}
+        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-cyan-300/45 to-transparent pointer-events-none z-30" />
+
+        {/* Tactical Corner HUD Marks */}
+        <div className="absolute top-3 left-3 w-3.5 h-3.5 border-t-2 border-l-2 border-cyan-400/70 pointer-events-none z-30" />
+        <div className="absolute top-3 right-3 w-3.5 h-3.5 border-t-2 border-r-2 border-cyan-400/70 pointer-events-none z-30" />
+        <div className="absolute bottom-3 left-3 w-3.5 h-3.5 border-b-2 border-l-2 border-cyan-400/70 pointer-events-none z-30" />
+        <div className="absolute bottom-3 right-3 w-3.5 h-3.5 border-b-2 border-r-2 border-cyan-400/70 pointer-events-none z-30" />
+
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3 mb-3.5 shrink-0">
+        <div className="flex items-center justify-between border-b border-cyan-500/20 pb-3 mb-3.5 shrink-0 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-slate-800 rounded-xl text-cyan-400 border border-cyan-500/30">
+            <div className="p-2.5 bg-cyan-950/60 backdrop-blur-md rounded-xl text-cyan-400 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.25)]">
               <Bot className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <span>AI 大模型与拟真语音中枢</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-500/40">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 shadow-sm">
                   NEURAL v2.6
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300/80">
                 支持自由切换国内外主流商业大模型或本地内置离线 AGI 引擎
               </p>
             </div>
@@ -270,14 +288,14 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
               stopAllSpeech();
               onClose();
             }}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 transition-colors cursor-pointer backdrop-blur-md"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 p-1 bg-slate-900/90 rounded-xl border border-slate-800 mb-3.5 shrink-0">
+        <div className="flex items-center gap-2 p-1.5 bg-black/40 backdrop-blur-xl rounded-xl border border-white/10 mb-3.5 shrink-0 relative z-10 shadow-inner">
           <button
             onClick={() => {
               setActiveTab('llm');
@@ -285,8 +303,8 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
             }}
             className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === 'llm'
-                ? 'bg-gradient-to-r from-cyan-600/90 to-blue-600/90 text-white shadow-lg border border-cyan-400/50'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-gradient-to-r from-cyan-600/90 to-blue-600/90 text-white shadow-[0_0_15px_rgba(6,182,212,0.35)] border border-cyan-400/50'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
             <Bot className="w-4 h-4 text-cyan-300" />
@@ -303,8 +321,8 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
             }}
             className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === 'tts'
-                ? 'bg-gradient-to-r from-cyan-600/90 to-blue-600/90 text-white shadow-lg border border-cyan-400/50'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-gradient-to-r from-cyan-600/90 to-blue-600/90 text-white shadow-[0_0_15px_rgba(6,182,212,0.35)] border border-cyan-400/50'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
             <Volume2 className="w-4 h-4 text-cyan-300" />
@@ -313,11 +331,11 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
         </div>
 
         {/* Tab Body - Scrollable */}
-        <div className="overflow-y-auto space-y-4 pr-1 text-sm custom-scrollbar flex-1">
+        <div className="overflow-y-auto space-y-4 pr-1 text-sm custom-scrollbar flex-1 relative z-10">
           {activeTab === 'llm' ? (
             <div className="space-y-4">
               {/* Domestic Network Friendly Advisory Banner */}
-              <div className="p-3 bg-gradient-to-r from-blue-950/60 via-slate-900/80 to-slate-900/60 rounded-xl border border-blue-500/30 text-xs text-slate-300 space-y-1">
+              <div className="p-3 bg-gradient-to-r from-blue-950/50 via-slate-900/60 to-slate-900/40 backdrop-blur-xl rounded-xl border border-blue-500/35 text-xs text-slate-300 space-y-1 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
                 <div className="flex items-center gap-2 font-bold text-blue-300">
                   <Zap className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>网络连接与大模型选择指南</span>
@@ -340,10 +358,10 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                         setProvider(item.id);
                         setErrorMsg(null);
                       }}
-                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative flex flex-col justify-between ${
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative flex flex-col justify-between backdrop-blur-xl ${
                         provider === item.id
-                          ? 'bg-blue-950/70 border-blue-400 text-white shadow-[0_0_12px_rgba(59,130,246,0.25)]'
-                          : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:border-slate-700'
+                          ? 'bg-blue-950/70 border-blue-400 text-white shadow-[0_0_16px_rgba(59,130,246,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)]'
+                          : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 hover:border-blue-400/40 text-slate-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
                       }`}
                     >
                       <div>
@@ -379,10 +397,10 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                         setProvider(item.id);
                         setErrorMsg(null);
                       }}
-                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative flex flex-col justify-between ${
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer relative flex flex-col justify-between backdrop-blur-xl ${
                         provider === item.id
-                          ? 'bg-cyan-950/70 border-cyan-400 text-white shadow-[0_0_12px_rgba(6,182,212,0.25)]'
-                          : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:border-slate-700'
+                          ? 'bg-cyan-950/70 border-cyan-400 text-white shadow-[0_0_16px_rgba(6,182,212,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)]'
+                          : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 hover:border-cyan-400/40 text-slate-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
                       }`}
                     >
                       <div>
@@ -417,10 +435,10 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                       setProvider(item.id);
                       setErrorMsg(null);
                     }}
-                    className={`w-full p-3 rounded-xl border text-left transition-all cursor-pointer relative flex items-center justify-between ${
+                    className={`w-full p-3 rounded-xl border text-left transition-all cursor-pointer relative flex items-center justify-between backdrop-blur-xl ${
                       provider === item.id
-                        ? 'bg-slate-800/80 border-amber-400/80 text-white shadow-[0_0_12px_rgba(251,191,36,0.2)]'
-                        : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:border-slate-700'
+                        ? 'bg-amber-950/50 border-amber-400/80 text-white shadow-[0_0_16px_rgba(251,191,36,0.25),inset_0_1px_1px_rgba(255,255,255,0.2)]'
+                        : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 hover:border-amber-400/40 text-slate-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
                     }`}
                   >
                     <div>
@@ -447,7 +465,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
 
               {/* Key & Custom Base URL Configuration Area */}
               {provider !== 'mock' && (
-                <div className="space-y-3 bg-slate-900/80 p-4 rounded-xl border border-slate-800 shadow-inner">
+                <div className="space-y-3 bg-white/[0.03] backdrop-blur-xl p-4 rounded-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-200 flex items-center gap-2">
                       <Key className="w-4 h-4 text-cyan-400" />
@@ -480,7 +498,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                         value={key}
                         onChange={(e) => setKey(e.target.value)}
                         placeholder={currentOption.placeholder || 'sk-...'}
-                        className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono shadow-inner"
+                        className="w-full bg-black/45 backdrop-blur-md border border-white/15 focus:border-cyan-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono shadow-inner transition-colors"
                       />
                       <Key className="w-4 h-4 text-slate-500 absolute right-3.5 top-3" />
                     </div>
@@ -503,7 +521,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                       value={baseUrl}
                       onChange={(e) => setBaseUrl(e.target.value)}
                       placeholder={`默认: ${currentOption.defaultEndpoint || '官方直连'}`}
-                      className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono shadow-inner"
+                      className="w-full bg-black/45 backdrop-blur-md border border-white/15 focus:border-cyan-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono shadow-inner transition-colors"
                     />
                     <p className="text-[10px] text-slate-500 mt-1">
                       国内自建代理或使用 One-API 等中转网关时，可在此填入自定义反代地址。
@@ -551,10 +569,10 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                     <button
                       key={item.id}
                       onClick={() => handleSelectTtsProvider(item.id as TTSProvider)}
-                      className={`p-3 rounded-xl border text-left transition-all relative cursor-pointer ${
+                      className={`p-3 rounded-xl border text-left transition-all relative cursor-pointer backdrop-blur-xl ${
                         ttsProvider === item.id
-                          ? 'bg-cyan-950/80 border-cyan-400 text-white shadow-[0_0_12px_rgba(0,240,255,0.25)]'
-                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                          ? 'bg-cyan-950/75 border-cyan-400 text-white shadow-[0_0_16px_rgba(0,240,255,0.28),inset_0_1px_1px_rgba(255,255,255,0.2)]'
+                          : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 hover:border-cyan-400/40 text-slate-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
@@ -571,7 +589,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
 
               {/* TTS Provider Specific Config */}
               {ttsProvider === 'natural_neural' ? (
-                <div className="p-3.5 bg-cyan-950/40 rounded-xl border border-cyan-500/30 text-xs text-slate-300 space-y-2">
+                <div className="p-3.5 bg-cyan-950/40 backdrop-blur-xl rounded-xl border border-cyan-500/30 text-xs text-slate-300 space-y-2 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]">
                   <div className="flex items-center gap-2 font-bold text-cyan-300">
                     <Sparkles className="w-4 h-4 text-cyan-400" />
                     <span>已启用微软深度神经网络自然人声音色（已消除机械音）</span>
@@ -581,7 +599,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3 bg-slate-900/70 p-3.5 rounded-xl border border-slate-800">
+                <div className="space-y-3 bg-white/[0.03] backdrop-blur-xl p-3.5 rounded-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]">
                   <div>
                     <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
                       <span className="flex items-center gap-1.5">
@@ -611,7 +629,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                       value={ttsKey}
                       onChange={(e) => setTtsKey(e.target.value)}
                       placeholder="sk-..."
-                      className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono"
+                      className="w-full bg-black/45 backdrop-blur-md border border-white/15 focus:border-cyan-500 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono shadow-inner transition-colors"
                     />
                   </div>
 
@@ -629,7 +647,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                             ? 'https://api.siliconflow.cn/v1/audio/speech'
                             : 'https://api.openai.com/v1/audio/speech'
                         }
-                        className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none font-mono"
+                        className="w-full bg-black/45 backdrop-blur-md border border-white/15 focus:border-cyan-500 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none font-mono shadow-inner transition-colors"
                       />
                     </div>
                     <div>
@@ -645,7 +663,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                             ? 'FunAudioLLM/CosyVoice2-0.5B'
                             : 'tts-1'
                         }
-                        className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none font-mono"
+                        className="w-full bg-black/45 backdrop-blur-md border border-white/15 focus:border-cyan-500 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none font-mono shadow-inner transition-colors"
                       />
                     </div>
                   </div>
@@ -664,12 +682,12 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                     return (
                       <div
                         key={id}
-                        className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-3"
+                        className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.07] backdrop-blur-xl border border-white/10 hover:border-cyan-500/30 flex items-center justify-between gap-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] transition-all"
                       >
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-xs text-white truncate">{profile.name}</span>
-                            <span className="text-[9px] px-1.5 py-0.2 bg-slate-800 text-slate-400 rounded">
+                            <span className="text-[9px] px-1.5 py-0.2 bg-white/10 backdrop-blur-md text-slate-300 rounded border border-white/10">
                               {profile.roleTitle}
                             </span>
                           </div>
@@ -684,7 +702,7 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
                           className={`shrink-0 px-2.5 py-1.5 rounded-lg font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
                             isPlaying
                               ? 'bg-rose-600 hover:bg-rose-500 text-white animate-pulse'
-                              : 'bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/40 hover:border-cyan-400'
+                              : 'bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-500/40 hover:border-cyan-400'
                           }`}
                         >
                           {isPlaying ? (
@@ -715,8 +733,8 @@ export const ApiConfigModal: React.FC<ApiConfigModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="pt-3.5 border-t border-cyan-500/20 flex flex-wrap items-center justify-between gap-3 shrink-0 mt-2">
-          <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
+        <div className="pt-3.5 border-t border-cyan-500/20 bg-gradient-to-r from-transparent via-cyan-950/20 to-transparent flex flex-wrap items-center justify-between gap-3 shrink-0 mt-2 relative z-10">
+          <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
             <Shield className="w-3.5 h-3.5 text-cyan-400" />
             <span>所有 Key 仅加密留存于您的浏览器 Storage，绝不上传任何第三方</span>
           </div>

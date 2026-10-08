@@ -16,6 +16,7 @@ import { bgmManager, speakNpcMessage, stopAllSpeech } from './utils/audio';
 import { getActiveGeminiApiKey } from './utils/security';
 
 import { LOCAL_STORAGE_KEYS, INITIAL_CYBER_CREDITS, MINIGAME_REPEAT_CREDITS, MINIGAME_FIRST_CREDITS_DEFAULT } from './constants/gameConfig';
+import { TERMINAL_EPOCH_THEMES, DEFAULT_TERMINAL_THEME } from './constants/themeConfig';
 
 const loadSavedState = <T,>(key: string, defaultVal: T): T => {
   try {
@@ -221,6 +222,7 @@ export function App() {
     if (targetLoc) {
       addLog(`🧭 [定位升降舱] 高亮选中场景【${targetLoc.name} (${targetLoc.level})】。`);
     }
+    bgmManager.playSfx('whoosh');
   };
 
   const handleTalkToNpc = (npcId: string) => {
@@ -762,22 +764,62 @@ export function App() {
   const isChonggangUnlocked = gameState.unlockedLocations.includes('chonggang');
   const chonggangChipInInventory = !isChonggangUnlocked && inventory.find((i) => i.id === 'chonggang_chip' && i.quantity > 0);
 
+  const currentTheme = TERMINAL_EPOCH_THEMES[gameState.currentLocationId] || DEFAULT_TERMINAL_THEME;
+
   return (
     <div className="game-viewport-frame flex flex-col select-none text-slate-200 relative">
-      {/* Ambient Cyber City Backdrop & Subtle Atmospheric Flares for Glass Refraction */}
-      <div
-        className="absolute inset-0 bg-[url('/cover.jpg')] bg-cover bg-center opacity-15 filter blur-[3px] brightness-75 contrast-125 pointer-events-none scale-105"
-      />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-2/3 left-1/3 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.3)_50%)] bg-[length:100%_4px]" />
+      {/* Synchronized Terminal Epoch Dynamic Background Gradient Layers (Hardware-Accelerated 60FPS Cross-Fade) */}
+      {Object.entries(TERMINAL_EPOCH_THEMES).map(([locId, theme]) => {
+        const isActive = gameState.currentLocationId === locId;
+        return (
+          <div
+            key={locId}
+            className={`absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-700 ease-in-out ${
+              isActive ? 'opacity-100 z-0' : 'opacity-0 -z-10'
+            }`}
+            style={{
+              background: theme.backgroundGradient,
+            }}
+          >
+            {/* Thematic Atmospheric Ambient Glow Orbs */}
+            <div
+              className={`absolute top-1/5 left-1/5 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none transition-all duration-1000 ${theme.orb1Class}`}
+            />
+            <div
+              className={`absolute bottom-1/4 right-1/5 w-[520px] h-[520px] rounded-full blur-3xl pointer-events-none transition-all duration-1000 ${theme.orb2Class}`}
+            />
+            <div
+              className={`absolute top-2/3 left-1/3 w-[420px] h-[420px] rounded-full blur-3xl pointer-events-none transition-all duration-1000 ${theme.orb3Class}`}
+            />
+          </div>
+        );
+      })}
 
-      {/* HUD Corner Reticles */}
-      <div className="hud-corner-tl" />
-      <div className="hud-corner-tr" />
-      <div className="hud-corner-bl" />
-      <div className="hud-corner-br" />
+      {/* Ambient Cyber City Backdrop & Subtle Atmospheric Flares for Glass Refraction */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="w-full h-full bg-[url('/cover.jpg')] bg-cover bg-center opacity-10 filter blur-[3px] brightness-75 contrast-125 scale-105"
+        />
+        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.3)_50%)] bg-[length:100%_4px]" />
+      </div>
+
+      {/* Synchronized HUD Corner Reticles with Dynamic Theme Reticle Color */}
+      <div
+        className="hud-corner-tl transition-colors duration-500"
+        style={{ borderColor: currentTheme.reticleColor }}
+      />
+      <div
+        className="hud-corner-tr transition-colors duration-500"
+        style={{ borderColor: currentTheme.reticleColor }}
+      />
+      <div
+        className="hud-corner-bl transition-colors duration-500"
+        style={{ borderColor: currentTheme.reticleColor }}
+      />
+      <div
+        className="hud-corner-br transition-colors duration-500"
+        style={{ borderColor: currentTheme.reticleColor }}
+      />
 
       {/* Top Game HUD Resource & Control Header */}
       <Navbar
@@ -793,10 +835,16 @@ export function App() {
       {/* Main Interactive Game World Canvas - Balanced Aesthetics & Maximum Breathability */}
       <main className="flex-1 overflow-y-auto lg:overflow-hidden px-3.5 py-2.5 sm:px-6 sm:py-3.5 max-w-[1720px] mx-auto w-full flex flex-col gap-3 sm:gap-3.5 min-h-0 relative z-10 custom-scrollbar">
         
-        {/* Sleek Tactical Mission Ribbon with Gradient Frosted Glass */}
-        <div className="w-full bg-gradient-to-r from-[#0d162a]/65 via-[#111e38]/70 to-[#161a2e]/65 backdrop-blur-xl rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 flex flex-wrap items-center justify-between gap-3 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.45)] shrink-0">
+        {/* Sleek Tactical Mission Ribbon with iOS Frosted Glass */}
+        <div
+          className="w-full bg-slate-950/45 backdrop-blur-2xl rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 flex flex-wrap items-center justify-between gap-3 border transition-colors duration-500 shadow-[0_8px_32px_rgba(0,0,0,0.45),inset_0_1px_1px_rgba(255,255,255,0.18)] shrink-0 relative overflow-hidden"
+          style={{ borderColor: currentTheme.hudBorderColor }}
+        >
+          {/* Top specular rim reflection */}
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-950/40 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 shadow-inner">
+            <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500/20 via-amber-950/30 to-black/40 border border-amber-500/35 flex items-center justify-center text-amber-400 shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]">
               <Layers className="w-5 h-5 text-amber-400" />
             </div>
             <div className="min-w-0">
@@ -804,11 +852,11 @@ export function App() {
                 <h2 className="font-black text-slate-100 text-sm sm:text-base tracking-wide whitespace-nowrap">
                   三大文明纪元 · 纵深星图
                 </h2>
-                <span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/40 rounded whitespace-nowrap">
+                <span className="px-2.5 py-0.5 text-[10px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/40 rounded-full whitespace-nowrap shadow-sm">
                   垂直落差 420M
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-light truncate mt-0.5 hidden sm:block">
+              <p className="text-[11px] text-slate-400/90 font-light truncate mt-0.5 hidden sm:block">
                 穿梭大河渔猎、山崖农耕、工业变革三大纪元，收集信物碎片唤醒核心算法
               </p>
             </div>
@@ -860,31 +908,61 @@ export function App() {
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4.5 min-h-0 overflow-visible lg:overflow-hidden">
           
           {/* Left Tactical Console with Harmonized Vertical Spacing */}
-          <aside className="lg:col-span-4 xl:col-span-4 flex flex-col gap-2.5 h-[340px] lg:h-full bg-gradient-to-b from-[#0e172a]/70 via-[#0a1020]/75 to-[#050914]/85 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-[0_12px_45px_rgba(0,0,0,0.55)] p-3.5 sm:p-4.5 relative overflow-hidden select-none shrink-0 min-h-0 dialogue-scanline-bg">
-            {/* Monitor HUD Corner Crosshairs */}
-            <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t-2 border-l-2 border-amber-500/60 pointer-events-none" />
-            <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t-2 border-r-2 border-amber-500/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b-2 border-l-2 border-amber-500/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b-2 border-r-2 border-amber-500/60 pointer-events-none" />
+          <aside
+            className="lg:col-span-4 xl:col-span-4 flex flex-col gap-2.5 h-[340px] lg:h-full bg-gradient-to-b from-[#0e172a]/70 via-[#0a1020]/75 to-[#050914]/85 backdrop-blur-2xl rounded-2xl border transition-colors duration-500 shadow-[0_12px_45px_rgba(0,0,0,0.55),inset_0_1px_1px_rgba(255,255,255,0.15)] p-3.5 sm:p-4.5 relative overflow-hidden select-none shrink-0 min-h-0 dialogue-scanline-bg"
+            style={{ borderColor: currentTheme.hudBorderColor }}
+          >
+            {/* Specular glass top reflection line */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none z-30" />
+
+            {/* Monitor HUD Corner Crosshairs Synchronized with Current Epoch Reticle Color */}
+            <div
+              className="absolute top-2.5 left-2.5 w-3 h-3 border-t-2 border-l-2 pointer-events-none transition-colors duration-500"
+              style={{ borderColor: currentTheme.reticleColor }}
+            />
+            <div
+              className="absolute top-2.5 right-2.5 w-3 h-3 border-t-2 border-r-2 pointer-events-none transition-colors duration-500"
+              style={{ borderColor: currentTheme.reticleColor }}
+            />
+            <div
+              className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b-2 border-l-2 pointer-events-none transition-colors duration-500"
+              style={{ borderColor: currentTheme.reticleColor }}
+            />
+            <div
+              className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b-2 border-r-2 pointer-events-none transition-colors duration-500"
+              style={{ borderColor: currentTheme.reticleColor }}
+            />
 
             {/* Tactical Monitor Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-2.5 shrink-0">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2.5 shrink-0 relative z-10">
               <div className="flex items-center gap-2.5">
-                <div className="p-1.5 rounded-xl bg-amber-500/10 border border-amber-500/40 text-amber-400">
+                <div
+                  className="p-1.5 rounded-xl border transition-colors duration-500"
+                  style={{
+                    backgroundColor: `${currentTheme.accentColor}18`,
+                    borderColor: `${currentTheme.accentColor}66`,
+                    color: currentTheme.accentColor,
+                  }}
+                >
                   <Terminal className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-amber-300 text-xs sm:text-sm font-mono tracking-wider">
+                  <h3
+                    className="font-bold text-xs sm:text-sm font-mono tracking-wider transition-colors duration-500"
+                    style={{ color: currentTheme.accentColor }}
+                  >
                     战术行动终端
                   </h3>
-                  <p className="text-[10px] text-slate-400 font-mono">山城溯源特遣系统</p>
+                  <p className="text-[10px] text-slate-400 font-mono">
+                    山城溯源特遣系统 · {currentTheme.epochName}
+                  </p>
                 </div>
               </div>
 
               <button
                 type="button"
                 onClick={() => setActiveModal('apiConfig')}
-                className="flex items-center gap-1.5 bg-emerald-950/70 hover:bg-emerald-900/90 border border-emerald-500/40 px-2 py-0.5 rounded-md cursor-pointer transition-all shadow-[0_0_8px_rgba(16,185,129,0.2)]"
+                className="flex items-center gap-1.5 bg-emerald-950/70 hover:bg-emerald-900/90 border border-emerald-500/40 px-2.5 py-1 rounded-full cursor-pointer transition-all shadow-[0_0_10px_rgba(16,185,129,0.25)] active:scale-95"
                 title="点击切换/配置 AI 大模型与 API Key"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -902,14 +980,16 @@ export function App() {
               </button>
             </div>
 
-            {/* Current Objective Directive Banner with Subtle Glass Gradient */}
-            <div className="p-2.5 sm:p-3 bg-gradient-to-r from-amber-500/15 via-[#0d172c]/60 to-[#070b16]/50 backdrop-blur-md rounded-xl border border-amber-500/30 shrink-0">
-              <div className="flex items-center justify-between text-[11px] font-bold text-amber-300 mb-1">
-                <span className="flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5 text-amber-400" />
+            {/* Current Objective Directive Banner with Synchronized Thematic Gradient */}
+            <div
+              className={`p-2.5 sm:p-3 bg-gradient-to-r ${currentTheme.directiveGradient} backdrop-blur-md rounded-xl border transition-all duration-500 shrink-0`}
+            >
+              <div className="flex items-center justify-between text-[11px] font-bold mb-1">
+                <span className="flex items-center gap-1.5" style={{ color: currentTheme.accentColor }}>
+                  <Compass className="w-3.5 h-3.5" />
                   <span>当前行动目标</span>
                 </span>
-                <span className="text-[10px] font-mono text-slate-400">DIRECTIVE</span>
+                <span className="text-[10px] font-mono text-slate-400">DIRECTIVE // {currentTheme.epochName}</span>
               </div>
               <p className="text-xs text-slate-300 leading-relaxed font-light">
                 {isChonggangUnlocked
@@ -920,20 +1000,22 @@ export function App() {
               </p>
             </div>
 
-            {/* Quick Sector Selector List */}
+            {/* Quick Sector Selector List with Synchronized Active State */}
             <div className="grid grid-cols-2 gap-2 shrink-0">
               {locations.map((loc) => {
                 const isSelected = loc.id === gameState.currentLocationId;
                 const isUnlocked = loc.unlocked;
+                const locTheme = TERMINAL_EPOCH_THEMES[loc.id] || DEFAULT_TERMINAL_THEME;
+
                 return (
                   <button
                     key={loc.id}
                     onClick={() => handleSelectLocation(loc.id)}
-                    className={`p-2 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between gap-1.5 backdrop-blur-md ${
+                    className={`p-2.5 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex items-center justify-between gap-1.5 backdrop-blur-md active:scale-95 ${
                       isSelected
-                        ? 'bg-amber-500/20 border-amber-500/70 text-amber-200 shadow-sm'
+                        ? locTheme.activeBtnClass
                         : isUnlocked
-                        ? 'bg-black/35 hover:bg-slate-800/50 border-white/10 text-slate-300'
+                        ? 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-slate-300 hover:border-white/20'
                         : 'bg-black/20 border-white/5 text-slate-600 opacity-60'
                     }`}
                   >
@@ -944,7 +1026,13 @@ export function App() {
                       <div className="text-[9px] font-mono text-slate-400">{loc.level}</div>
                     </div>
                     {isSelected ? (
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0 animate-pulse"
+                        style={{
+                          backgroundColor: locTheme.accentColor,
+                          boxShadow: locTheme.accentGlow,
+                        }}
+                      />
                     ) : !isUnlocked ? (
                       <Lock className="w-3 h-3 text-slate-600 shrink-0" />
                     ) : null}
@@ -954,7 +1042,7 @@ export function App() {
             </div>
 
             {/* Tactical Log Stream */}
-            <div className="flex-1 flex flex-col bg-black/45 backdrop-blur-xl rounded-xl border border-white/10 p-2.5 sm:p-3 overflow-hidden shadow-inner min-h-0">
+            <div className="flex-1 flex flex-col bg-black/45 backdrop-blur-2xl rounded-2xl border border-white/10 p-2.5 sm:p-3 overflow-hidden shadow-inner min-h-0">
               <div className="flex items-center justify-between border-b border-white/10 pb-1.5 mb-2 font-mono text-[10px] text-slate-400 shrink-0">
                 <span className="flex items-center gap-1.5 text-amber-400 font-semibold">
                   <Activity className="w-3 h-3 text-amber-400" />
@@ -984,7 +1072,7 @@ export function App() {
           </aside>
 
           {/* Right Section: Scene Container / LocationMap */}
-          <section className="lg:col-span-8 xl:col-span-8 flex flex-col min-h-[460px] lg:h-full lg:min-h-0 overflow-visible lg:overflow-y-auto pr-1 sm:pr-2 gap-3.5 custom-scrollbar">
+          <section id="tactical-locations-scroll-container" className="lg:col-span-8 xl:col-span-8 flex flex-col min-h-[460px] lg:h-full lg:min-h-0 overflow-visible lg:overflow-y-auto pr-1 sm:pr-2 gap-3.5 custom-scrollbar">
             {/* Prominent Visual Toast Banner */}
             {chonggangChipInInventory && (
               <div className="bg-gradient-to-r from-amber-950/40 via-slate-900/60 to-amber-950/30 backdrop-blur-xl text-amber-200 p-3.5 rounded-2xl border border-amber-500/40 shadow-[0_8px_32px_rgba(245,158,11,0.2)] flex items-center justify-between gap-4 shrink-0">

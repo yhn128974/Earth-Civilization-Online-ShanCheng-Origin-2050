@@ -15,18 +15,17 @@ html, body {
    Standalone Interactive Game HUD & Viewport Framing
    ============================================================ */
 
-/* Outer Game Screen Vignette & Tactical Frame with Subtle Cyber Gradient & Ambient Depth */
+/* Outer Game Screen Vignette & Tactical Frame with Dynamic Cyber Gradient */
 .game-viewport-frame {
   position: relative;
   height: 100dvh;
+  max-height: 100dvh;
   width: 100vw;
+  max-width: 100vw;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 15% 15%, rgba(14, 165, 233, 0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 20%, rgba(245, 158, 11, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 75% 85%, rgba(99, 102, 241, 0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 25% 80%, rgba(244, 63, 94, 0.08) 0%, transparent 50%),
-    linear-gradient(145deg, #070a14 0%, #0d1527 40%, #091020 70%, #05070e 100%);
+  contain: layout size;
+  overscroll-behavior: none;
+  background-color: #040711;
   box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
 }
 
@@ -87,15 +86,54 @@ html, body {
 /* 3D Scene Trapezoid Container */
 .spatial-perspective-container {
   width: 100%;
+  position: relative;
+}
+
+.spatial-perspective-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  opacity: 0.5;
+  z-index: 1;
 }
 
 /* 3D Depth Card Base & Lift Styles - Each card forms a pronounced isosceles trapezoid (left side shorter) */
 .spatial-card-3d {
   --card-z: 0px;
+  position: relative;
   transform-style: preserve-3d;
   transform: perspective(600px) rotateY(-1deg) translateZ(var(--card-z));
   transform-origin: 100% 50%;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease, filter 0.5s ease;
+}
+
+/* Cyber Frosted Glass CRT Scanline Texture - Synchronized with Tactical Terminal & Dialogue Modal */
+.spatial-card-3d::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.16) 2px,
+    rgba(0, 0, 0, 0.16) 4px
+  );
+  opacity: 0.85;
+  z-index: 15;
 }
 
 .spatial-card-liziba {
@@ -168,7 +206,7 @@ html, body {
 /* Selected Location Active State */
 .spatial-card-selected {
   --card-z: 0px;
-  transform: perspective(600px) rotateY(0deg) translateZ(var(--card-z));
+  transform: perspective(600px) rotateY(0deg) translateZ(var(--card-z)) !important;
   border-top: 1px solid rgba(251, 191, 36, 0.55);
   border-left: 1px solid rgba(251, 191, 36, 0.35);
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);

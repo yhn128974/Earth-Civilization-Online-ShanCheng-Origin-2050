@@ -128,8 +128,20 @@ export const MiniGameModal: React.FC<MiniGameModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/95 select-none">
-      <div className="relative w-full max-w-4xl rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden bg-[#070a13] border-2 border-amber-500/40 dialogue-scanline-bg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-xl select-none">
+      {/* Radiant Amber Ambient Halo behind modal */}
+      <div
+        className="absolute w-[600px] h-[450px] rounded-full blur-[100px] opacity-25 pointer-events-none animate-pulse"
+        style={{
+          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(249, 115, 22, 0.25) 50%, transparent 75%)',
+          animationDuration: '6s',
+        }}
+      />
+
+      <div className="relative w-full max-w-4xl rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.8),0_0_50px_rgba(245,158,11,0.2),inset_0_1px_1px_rgba(255,255,255,0.25)] flex flex-col max-h-[92vh] overflow-hidden bg-gradient-to-b from-[#141824]/85 via-[#0c101c]/90 to-[#060812]/95 backdrop-blur-2xl border border-amber-500/40 dialogue-scanline-bg">
+        {/* Specular Glass Top Highlight Edge */}
+        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-300/40 to-transparent pointer-events-none z-30" />
+
         {/* Tactical Corner HUD Marks */}
         <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-amber-400/80 pointer-events-none z-30" />
         <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-amber-400/80 pointer-events-none z-30" />
@@ -137,19 +149,19 @@ export const MiniGameModal: React.FC<MiniGameModalProps> = ({
         <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-amber-400/80 pointer-events-none z-30" />
 
         {/* Header Bar - Exclusive Chapter Easter Egg */}
-        <div className="relative z-10 flex items-center justify-between gap-2 px-4 sm:px-6 py-3.5 border-b border-slate-800 bg-[#090d18] shrink-0">
+        <div className="relative z-10 flex items-center justify-between gap-2 px-4 sm:px-6 py-3.5 border-b border-white/10 bg-white/[0.03] backdrop-blur-md shrink-0">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-            <span className="text-xl sm:text-2xl shrink-0">{GAME_META[selectedGame].icon}</span>
+            <span className="text-xl sm:text-2xl shrink-0 p-1.5 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10">{GAME_META[selectedGame].icon}</span>
             <div className="min-w-0">
               <h3 className="font-black text-slate-100 text-xs sm:text-base tracking-wide truncate">
                 {GAME_META[selectedGame].name}
               </h3>
               <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40 whitespace-nowrap">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40 whitespace-nowrap">
                   {GAME_META[selectedGame].location} · 对话专属彩蛋
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 hidden sm:block">
+              <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 hidden sm:block font-light">
                 对话中触发的巴渝文化实操挑战！完成即可提升好感度并赢取丰厚奖励。
               </p>
             </div>
@@ -157,7 +169,7 @@ export const MiniGameModal: React.FC<MiniGameModalProps> = ({
 
           <button
             onClick={onClose}
-            className="shrink-0 p-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors border border-slate-700 cursor-pointer"
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white border border-white/15 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer active:scale-95 shrink-0"
           >
             <X className="w-4 h-4" />
           </button>

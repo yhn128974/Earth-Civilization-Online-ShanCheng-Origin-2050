@@ -49,13 +49,30 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
   }[currentPersona];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-      <div className="relative w-full max-w-xl bg-[#0e111a] rounded-3xl border border-slate-800 shadow-2xl p-4 sm:p-6 flex flex-col max-h-full overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-xl select-none">
+      {/* Radiant Amber Ambient Halo behind modal */}
+      <div
+        className="absolute w-[500px] h-[400px] rounded-full blur-[90px] opacity-25 pointer-events-none animate-pulse"
+        style={{
+          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(225, 29, 72, 0.25) 50%, transparent 75%)',
+          animationDuration: '6s',
+        }}
+      />
+
+      <div className="relative w-full max-w-xl rounded-3xl border border-amber-500/35 shadow-[0_25px_70px_rgba(0,0,0,0.8),0_0_50px_rgba(245,158,11,0.15),inset_0_1px_1px_rgba(255,255,255,0.25)] bg-gradient-to-b from-[#141824]/85 via-[#0c101c]/90 to-[#060812]/95 backdrop-blur-2xl p-4 sm:p-6 flex flex-col max-h-[92vh] overflow-hidden dialogue-scanline-bg">
+        {/* Specular Glass Top Highlight Edge */}
+        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-300/40 to-transparent pointer-events-none z-30" />
+
+        {/* Tactical Corner HUD Marks */}
+        <div className="absolute top-3 left-3 w-3.5 h-3.5 border-t-2 border-l-2 border-amber-400/70 pointer-events-none z-30" />
+        <div className="absolute top-3 right-3 w-3.5 h-3.5 border-t-2 border-r-2 border-amber-400/70 pointer-events-none z-30" />
+        <div className="absolute bottom-3 left-3 w-3.5 h-3.5 border-b-2 border-l-2 border-amber-400/70 pointer-events-none z-30" />
+        <div className="absolute bottom-3 right-3 w-3.5 h-3.5 border-b-2 border-r-2 border-amber-400/70 pointer-events-none z-30" />
         
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 shrink-0">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-3.5 shrink-0 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-slate-900 rounded-xl border border-slate-800 text-amber-400">
+            <div className="p-2 bg-amber-950/60 backdrop-blur-md rounded-2xl border border-amber-500/40 text-amber-400 shadow-[0_0_14px_rgba(245,158,11,0.2)]">
               <Package className="w-5 h-5" />
             </div>
             <div>
@@ -64,31 +81,31 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Credit Balance Badge */}
-            <div className="flex items-center gap-1.5 bg-[#090b10] px-3 py-1.5 rounded-xl border border-slate-800 text-slate-300 text-xs font-semibold shadow-inner">
+          <div className="flex items-center gap-2.5">
+            {/* Credit Balance Badge - iOS Pill Widget */}
+            <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-xl px-3 py-1.5 rounded-full border border-white/15 text-slate-300 text-xs font-semibold shadow-inner">
               <Coins className="w-4 h-4 text-amber-400" />
-              <span>积分:</span>
-              <span className="text-sm font-bold text-slate-100">{cyberCredits}</span>
+              <span className="text-[11px] text-slate-400">积分:</span>
+              <span className="text-sm font-mono font-bold text-slate-100">{cyberCredits}</span>
             </div>
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors"
+              className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white border border-white/15 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer active:scale-95"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="grid grid-cols-2 gap-2 mb-3 shrink-0">
+        {/* Tab Switcher - iOS Segmented Control */}
+        <div className="grid grid-cols-2 p-1 bg-black/45 backdrop-blur-xl rounded-2xl border border-white/10 mb-3.5 shrink-0 relative z-10 shadow-inner">
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`py-2 px-3 rounded-xl text-xs font-semibold border transition-all flex items-center justify-center gap-2 ${
+            className={`py-2 px-3 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === 'inventory'
-                ? 'bg-amber-500/15 border-amber-500/50 text-amber-300 shadow-sm'
-                : 'bg-[#090b10] border-slate-800 text-slate-400 hover:text-slate-200'
+                ? 'bg-amber-500/20 border border-amber-400/60 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.25)]'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
             <Package className="w-4 h-4" />
@@ -97,24 +114,24 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
 
           <button
             onClick={() => setActiveTab('workshop')}
-            className={`py-2 px-3 rounded-xl text-xs font-semibold border transition-all flex items-center justify-center gap-2 ${
+            className={`py-2 px-3 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === 'workshop'
-                ? 'bg-rose-500/15 border-rose-500/50 text-rose-300 shadow-sm'
-                : 'bg-[#090b10] border-slate-800 text-slate-400 hover:text-slate-200'
+                ? 'bg-rose-500/20 border border-rose-400/60 text-rose-300 shadow-[0_0_12px_rgba(244,63,94,0.25)]'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
             <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>巴渝非遗量子工坊 (炼化/变脸)</span>
+            <span>巴渝非遗量子工坊</span>
           </button>
         </div>
 
         {/* Scrollable Content Area */}
-        <div className="flex-1 overflow-y-auto pr-1 space-y-4">
+        <div className="flex-1 overflow-y-auto pr-1 space-y-4 relative z-10 custom-scrollbar">
 
           {activeTab === 'inventory' ? (
             <>
               {/* Black Market Direct Energy Recharge Station */}
-              <div className="p-3.5 bg-[#121620] rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-2 shadow-sm">
+              <div className="p-3.5 bg-white/[0.04] backdrop-blur-xl rounded-2xl border border-white/10 text-xs text-slate-300 space-y-2 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
                 <div className="flex items-center justify-between">
                   <strong className="text-amber-300 font-semibold flex items-center gap-1.5">
                     <Coins className="w-4 h-4 text-amber-400" />
@@ -135,10 +152,10 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                   <button
                     onClick={handleRechargeClick}
                     disabled={cyberCredits < RECHARGE_COST}
-                    className="w-full p-3 rounded-xl bg-[#090b10] hover:bg-[#161b26] border border-slate-800 disabled:opacity-40 text-left transition-colors flex items-center justify-between shadow-sm cursor-pointer"
+                    className="w-full p-3 rounded-xl bg-black/40 hover:bg-white/[0.08] border border-white/10 disabled:opacity-40 text-left transition-all flex items-center justify-between shadow-sm cursor-pointer active:scale-[0.99]"
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="p-1.5 bg-slate-900 rounded-lg border border-slate-800">
+                      <div className="p-1.5 bg-white/[0.06] rounded-xl border border-white/10">
                         <Zap className="w-4 h-4 text-amber-400" />
                       </div>
                       <div>
@@ -146,7 +163,7 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                         <div className="text-[10px] text-amber-400/90 font-medium">回复 +{RECHARGE_ENERGY_GAIN} 点义体能量</div>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-amber-300 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
+                    <span className="text-xs font-bold text-amber-300 bg-white/[0.06] px-3 py-1.5 rounded-full border border-white/10">
                       {RECHARGE_COST} 积分
                     </span>
                   </button>
@@ -155,7 +172,7 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
 
               {/* Highlight Banner for Chonggang Chip (Only if not yet unlocked) */}
               {inventory.some((i) => i.id === 'chonggang_chip' && i.quantity > 0) && !isChonggangUnlocked && (
-                <div className="p-3 bg-amber-950/40 border border-amber-500/40 rounded-xl text-xs text-amber-200 flex items-center gap-2.5 shadow-sm">
+                <div className="p-3 bg-amber-950/40 backdrop-blur-xl border border-amber-500/40 rounded-2xl text-xs text-amber-200 flex items-center gap-2.5 shadow-sm">
                   <Sparkles className="w-5 h-5 text-amber-400 flex-shrink-0" />
                   <div>
                     <strong className="text-amber-300 block">💡 纪元解封就绪：</strong>
@@ -175,12 +192,12 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className={`p-4 rounded-xl border transition-all duration-300 flex flex-col justify-between ${
+                      className={`p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between backdrop-blur-xl ${
                         isBackpackUsable
-                          ? 'bg-amber-950/30 border-amber-500/60 shadow-md'
+                          ? 'bg-amber-950/35 border-amber-500/60 shadow-[0_0_16px_rgba(245,158,11,0.25)]'
                           : hasQuantity
-                          ? 'bg-[#121620] border-slate-800 shadow-sm'
-                          : 'bg-[#090b10]/40 border-slate-900 opacity-40'
+                          ? 'bg-white/[0.04] hover:bg-white/[0.08] border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
+                          : 'bg-black/20 border-white/5 opacity-35'
                       }`}
                     >
                       <div>
@@ -190,10 +207,10 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                             <h4 className="font-bold text-sm text-slate-100">{item.name}</h4>
                           </div>
                           <span
-                            className={`text-xs font-semibold px-2 py-0.5 rounded border ${
+                            className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${
                               hasQuantity
-                                ? 'bg-[#090b10] text-amber-300 border-slate-800'
-                                : 'bg-[#090b10] text-slate-600 border-slate-900'
+                                ? 'bg-white/[0.08] text-amber-300 border-white/15'
+                                : 'bg-black/40 text-slate-600 border-white/5'
                             }`}
                           >
                             x{item.quantity}
@@ -206,13 +223,13 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                       {isBackpackUsable && onUseItem ? (
                         <button
                           onClick={() => onUseItem(item.id)}
-                          className="w-full py-2 text-xs font-bold rounded-lg bg-amber-600 hover:bg-amber-500 text-slate-950 shadow-md flex items-center justify-center gap-1.5 mt-2 transition-colors cursor-pointer"
+                          className="w-full py-2 text-xs font-bold rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md flex items-center justify-center gap-1.5 mt-2 transition-all cursor-pointer active:scale-95"
                         >
                           <Sparkles className="w-3.5 h-3.5" />
                           <span>点击使用解封 -18F 关卡</span>
                         </button>
                       ) : hasQuantity && item.id === 'chonggang_chip' && isChonggangUnlocked ? (
-                        <div className="mt-2 p-2 bg-emerald-950/40 rounded-lg border border-emerald-500/30 text-[11px] text-emerald-300 flex items-center gap-1.5 font-medium">
+                        <div className="mt-2 p-2 bg-emerald-950/40 rounded-xl border border-emerald-500/30 text-[11px] text-emerald-300 flex items-center gap-1.5 font-medium">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                           <span>终极密钥已激活 · -18F 重钢已解封</span>
                         </div>
@@ -257,7 +274,7 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
             /* Workshop Tab: 巴渝非遗量子工坊 */
             <div className="space-y-4">
               {/* Workshop Introduction Banner */}
-              <div className="p-4 bg-gradient-to-r from-rose-950/50 via-[#141220] to-[#0e111a] rounded-2xl border border-rose-500/40 space-y-2">
+              <div className="p-4 bg-gradient-to-r from-rose-950/40 via-purple-950/30 to-black/40 backdrop-blur-xl rounded-2xl border border-rose-500/35 space-y-2 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
                 <div className="flex items-center gap-2 text-rose-300 font-bold text-xs sm:text-sm">
                   <Sparkles className="w-4 h-4 text-amber-400" />
                   <span>巴渝非遗量子熔炉 // INTANGIBLE CULTURAL QUANTUM FORGE</span>
@@ -268,10 +285,10 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
               </div>
 
               {/* Craftable Item 1: 川剧变脸 · 量子义体面具 */}
-              <div className="p-4 rounded-2xl bg-[#121620] border border-slate-800 hover:border-rose-500/50 transition-all space-y-3">
+              <div className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl border border-white/10 hover:border-rose-500/40 transition-all space-y-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl p-2 bg-slate-900 rounded-2xl border border-slate-800">🎭</span>
+                    <span className="text-3xl p-2 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10">🎭</span>
                     <div>
                       <div className="flex items-center gap-2">
                         <h4 className="font-bold text-sm text-slate-100">川剧变脸 · 量子义体面具</h4>
@@ -288,7 +305,7 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
 
                 {/* Persona status if owned */}
                 {(operaMask?.quantity || 0) > 0 ? (
-                  <div className="p-3 bg-[#0a0d16] rounded-xl border border-slate-800 flex items-center justify-between">
+                  <div className="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 flex items-center justify-between">
                     <div>
                       <div className="text-[11px] text-slate-400">当前激活面相形态：</div>
                       <div className="text-xs font-bold text-amber-300 mt-0.5 flex items-center gap-2">
@@ -300,21 +317,21 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                     </div>
                     <button
                       onClick={() => onUseItem && onUseItem('opera_mask')}
-                      className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                      className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
                       <span>瞬息变脸</span>
                     </button>
                   </div>
                 ) : (
-                  <div className="pt-2 flex items-center justify-between border-t border-slate-800">
+                  <div className="pt-2 flex items-center justify-between border-t border-white/10">
                     <span className="text-xs text-amber-300 font-mono font-semibold flex items-center gap-1">
                       <Coins className="w-4 h-4" /> {CRAFT_OPERA_MASK_COST} 积分
                     </span>
                     <button
                       onClick={() => onCraftItem && onCraftItem('opera_mask', CRAFT_OPERA_MASK_COST)}
                       disabled={cyberCredits < CRAFT_OPERA_MASK_COST}
-                      className="px-5 py-2 bg-rose-600 hover:bg-rose-500 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                      className="px-5 py-2 bg-rose-600 hover:bg-rose-500 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
                       <span>量子熔铸面具</span>
@@ -324,10 +341,10 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
               </div>
 
               {/* Craftable Item 2: 赛博九宫格火锅 · 量子聚能底料 */}
-              <div className="p-4 rounded-2xl bg-[#121620] border border-slate-800 hover:border-amber-500/50 transition-all space-y-3">
+              <div className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-xl border border-white/10 hover:border-amber-500/40 transition-all space-y-3 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl p-2 bg-slate-900 rounded-2xl border border-slate-800">🍲</span>
+                    <span className="text-3xl p-2 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10">🍲</span>
                     <div>
                       <div className="flex items-center gap-2">
                         <h4 className="font-bold text-sm text-slate-100">赛博九宫格火锅 · 量子聚能底料</h4>
@@ -342,7 +359,7 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                   </div>
                 </div>
 
-                <div className="pt-2 flex items-center justify-between border-t border-slate-800">
+                <div className="pt-2 flex items-center justify-between border-t border-white/10">
                   <div className="text-xs font-mono">
                     <span className="text-slate-400">已熬制存量: </span>
                     <span className="text-amber-300 font-bold">{hotpotMatrix?.quantity || 0} 份</span>
@@ -353,7 +370,7 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                     {(hotpotMatrix?.quantity || 0) > 0 && (
                       <button
                         onClick={() => onUseItem && onUseItem('hotpot_matrix')}
-                        className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1 cursor-pointer"
+                        className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1 cursor-pointer active:scale-95"
                       >
                         <Flame className="w-3.5 h-3.5" />
                         <span>立即享用 (+60)</span>
@@ -363,7 +380,7 @@ export const InventoryModal: React.FC<InventoryModalProps> = ({
                     <button
                       onClick={() => onCraftItem && onCraftItem('hotpot_matrix', CRAFT_HOTPOT_MATRIX_COST)}
                       disabled={cyberCredits < CRAFT_HOTPOT_MATRIX_COST}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-amber-300 border border-slate-700 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1 cursor-pointer"
+                      className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.14] disabled:opacity-40 text-amber-300 border border-white/15 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1 cursor-pointer active:scale-95"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
                       <span>量子熬制</span>
