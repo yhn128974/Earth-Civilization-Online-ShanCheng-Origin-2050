@@ -293,7 +293,7 @@ export const OpeningCinematic: React.FC<OpeningCinematicProps> = ({
     }
   }, [isMuteLocal]);
 
-  // Handle final exit transition
+  // Handle final exit transition (direct entry into game)
   const handleFinish = useCallback(() => {
     if (hasFinishedRef.current) return;
     hasFinishedRef.current = true;
@@ -310,6 +310,33 @@ export const OpeningCinematic: React.FC<OpeningCinematicProps> = ({
       onComplete();
     }, 600);
   }, [onComplete, playSfx]);
+
+  // Transition from video CG to story lore briefing (Stage 1 -> Stage 2)
+  const handleTransitionToLore = useCallback(() => {
+    if (videoRef.current) {
+      try {
+        videoRef.current.pause();
+      } catch {}
+    }
+    playSfx('whoosh');
+    setDisplayMode('lore');
+    setCurrentChapter(0);
+    setChapterProgress(0);
+    setIsPaused(false);
+  }, [playSfx]);
+
+  // Replay video CG (Stage 2 -> Stage 1)
+  const handleReplayVideo = useCallback(() => {
+    playSfx('whoosh');
+    setDisplayMode('video');
+    setIsPaused(false);
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(() => {});
+      }
+    }, 100);
+  }, [playSfx]);
 
   // Video timeupdate handler
   const handleVideoTimeUpdate = () => {
@@ -425,31 +452,51 @@ export const OpeningCinematic: React.FC<OpeningCinematicProps> = ({
       }`}
     >
       {/* Cinematic Top Letterbox Bar */}
-      <div className="relative z-30 h-10 sm:h-12 bg-black/95 border-b border-slate-900 px-3 sm:px-8 flex items-center justify-between gap-2 shrink-0">
-        <div className="flex items-center gap-1.5 min-w-0 shrink">
+      <div className="relative z-30 h-11 sm:h-12 bg-black/95 border-b border-slate-900 px-3 sm:px-8 flex items-center justify-between gap-2 shrink-0">
+        <div className="flex items-center gap-2 min-w-0 shrink">
           <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-rose-500 animate-ping shrink-0" />
           <span className="text-[10px] sm:text-[11px] font-mono font-bold text-amber-400 tracking-wider whitespace-nowrap truncate">
-            <span className="hidden sm:inline">ECO // 2050 PROLOGUE CINEMATIC</span>
-            <span className="sm:hidden">ECO // 2050</span>
+            ECO // 2050
           </span>
-          <span className="text-slate-600 text-xs hidden sm:inline">|</span>
-          <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">
-            《地球文明Online：山城溯源 2050》4K 官方先导开场大片
-          </span>
+          <span className="text-slate-700 text-xs hidden sm:inline">|</span>
+          {/* Narrative Phase Badge */}
+          {displayMode === 'video' ? (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] sm:text-[11px] font-mono">
+              <Film className="w-3 h-3 text-amber-400" />
+              <span>阶段 1/2 · 4K 赛博山城先导视听</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-[10px] sm:text-[11px] font-mono">
+              <BookOpen className="w-3 h-3 text-cyan-400" />
+              <span>阶段 2/2 · 溯源特遣指令简报 ({safeChapterIndex + 1}/4)</span>
+            </span>
+          )}
         </div>
 
-        {/* Top Control Bar: Audio, Lore Toggle & Skip */}
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-          {/* Toggle between Video CG and Lore Chapters */}
+        {/* Top Control Bar: Audio, Stage Navigation & Direct Start */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          {/* Mode Switcher / Skip Video to Lore */}
           {!hasVideoError && (
-            <button
-              onClick={() => setDisplayMode(displayMode === 'video' ? 'lore' : 'video')}
-              className="px-2 sm:px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-800 text-[10px] sm:text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
-              title={displayMode === 'video' ? '切换为剧情设定档案' : '返回播放视频CG'}
-            >
-              {displayMode === 'video' ? <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cyan-400" /> : <Film className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />}
-              <span className="hidden sm:inline">{displayMode === 'video' ? '设定档案' : '播放视频CG'}</span>
-            </button>
+            displayMode === 'video' ? (
+              <button
+                onClick={handleTransitionToLore}
+                className="px-2 sm:px-3 py-1 rounded-lg bg-cyan-950/80 hover:bg-cyan-900/90 text-cyan-300 border border-cyan-500/40 text-[10px] sm:text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-all hover:scale-105 shadow-sm"
+                title="跳过视频动画，直接查看故事背景与三大文明档案"
+              >
+                <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline">跳过视频 · </span>
+                <span>查看任务背景 ➔</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleReplayVideo}
+                className="px-2 sm:px-3 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-700 text-[10px] sm:text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
+                title="返回重新播放 4K 先导视频CG"
+              >
+                <Film className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
+                <span>重播先导视频</span>
+              </button>
+            )
           )}
 
           {/* Mute button */}
@@ -464,12 +511,12 @@ export const OpeningCinematic: React.FC<OpeningCinematicProps> = ({
           {/* Skip directly into game */}
           <button
             onClick={handleFinish}
-            className="px-2.5 sm:px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 to-yellow-500/25 hover:from-amber-500/40 hover:to-yellow-500/40 text-amber-300 hover:text-white border border-amber-400/60 text-[10px] sm:text-xs font-mono font-extrabold flex items-center gap-1 sm:gap-1.5 cursor-pointer transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:scale-105 group whitespace-nowrap"
-            title="跳过序章直接进入山城世界"
+            className="px-2 sm:px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-800 hover:border-amber-500/50 text-[10px] sm:text-xs font-mono font-medium flex items-center gap-1 cursor-pointer transition-all group whitespace-nowrap"
+            title="跳过全部序幕直接开始游戏"
           >
-            <span className="hidden sm:inline">跳过序幕 · 进入游戏</span>
-            <span className="sm:hidden">跳过预告</span>
-            <FastForward className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-1 transition-transform text-amber-400" />
+            <span className="hidden sm:inline">跳过全部 · </span>
+            <span>直接开始</span>
+            <FastForward className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 transition-transform text-amber-400" />
           </button>
         </div>
       </div>
@@ -485,11 +532,11 @@ export const OpeningCinematic: React.FC<OpeningCinematicProps> = ({
             playsInline
             muted={isMuteLocal}
             onTimeUpdate={handleVideoTimeUpdate}
-            onEnded={handleFinish}
+            onEnded={handleTransitionToLore}
             onError={() => {
               console.warn('Video failed to load, falling back to lore mode.');
               setHasVideoError(true);
-              setDisplayMode('lore');
+              handleTransitionToLore();
             }}
             className="w-full h-full object-contain pointer-events-none"
           />
@@ -530,9 +577,22 @@ export const OpeningCinematic: React.FC<OpeningCinematicProps> = ({
                 <span className="text-amber-300 font-bold">
                   {formatVideoTime(videoCurrentTime)} / {formatVideoTime(videoDuration)}
                 </span>
+                <span className="text-slate-500 text-[11px] hidden md:inline">
+                  （视听播放完毕将自动进入战术背景简报）
+                </span>
               </div>
-              <div className="text-[10px] text-slate-500 hidden sm:block">
-                [SPACE] 暂停/播放 · [ESC] 跳过序幕
+              <div className="flex items-center gap-2.5">
+                <div className="text-[10px] text-slate-500 hidden lg:block">
+                  [SPACE] 暂停/播放 · [ESC] 跳过序幕
+                </div>
+                <button
+                  onClick={handleTransitionToLore}
+                  className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-cyan-950/80 to-blue-950/80 hover:from-cyan-900 hover:to-blue-900 text-cyan-300 border border-cyan-500/40 text-[10px] sm:text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-all hover:scale-105 shadow-sm"
+                  title="提前进入背景设定与三大文明简报"
+                >
+                  <span>进入战术简报</span>
+                  <ChevronRight className="w-3 h-3 text-cyan-400" />
+                </button>
               </div>
             </div>
 
@@ -669,14 +729,25 @@ export const OpeningCinematic: React.FC<OpeningCinematicProps> = ({
 
             {/* Action Row: Prev, Next / Launch */}
             <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
-              <button
-                onClick={handlePrev}
-                disabled={safeChapterIndex === 0}
-                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-30 border border-slate-800 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                <span>上一幕 (PREV)</span>
-              </button>
+              {safeChapterIndex === 0 && !hasVideoError ? (
+                <button
+                  onClick={handleReplayVideo}
+                  className="px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-800 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+                  title="返回重新播放 4K 先导视听大片"
+                >
+                  <Film className="w-3.5 h-3.5 text-amber-400" />
+                  <span>重播先导视频</span>
+                </button>
+              ) : (
+                <button
+                  onClick={handlePrev}
+                  disabled={safeChapterIndex === 0}
+                  className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-30 border border-slate-800 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>上一幕 (PREV)</span>
+                </button>
+              )}
 
               {safeChapterIndex < CINEMATIC_CHAPTERS.length - 1 ? (
                 <button
