@@ -1,5 +1,85 @@
 import type { DialogueChoice } from '../types/game';
 
+export const getEvergreenChoices = (npcId: string): DialogueChoice[] => {
+  switch (npcId) {
+    case 'bangbang_88':
+      return [
+        {
+          id: 'bb_lore_evergreen',
+          text: '继续请教：关于当地历史与巴渝风貌的更多传奇。',
+          response: '巴渝大地的文化博大精深！无论是古老的吊脚楼、抗战历史，还是高空云轨，都凝聚着先民的勤劳与智慧！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+        {
+          id: 'bb_thanks_evergreen',
+          text: '交流感想：感谢热情分享，我对这片土地有了更深刻的共鸣！',
+          response: '客气了！能有你这样尊重历史与风貌的好小子，老汉十分欣慰！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+      ];
+    case 'gaiwan_jie':
+      return [
+        {
+          id: 'gw_lore_evergreen',
+          text: '继续请教：关于当地历史与巴渝风貌的更多传奇。',
+          response: '巴渝大地的文化博大精深！无论是古老的吊脚楼、抗战历史，还是高空云轨，都凝聚着先民的勤劳与智慧！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+        {
+          id: 'gw_thanks_evergreen',
+          text: '交流感想：感谢热情分享，我对这片土地有了更深刻的共鸣！',
+          response: '客气了！能有你这样尊重历史与风貌的客官，姐十分欣慰！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+      ];
+    case 'zero_machine':
+      return [
+        {
+          id: 'zero_lore_evergreen',
+          text: '继续请教：关于大河水文与山地枢纽的更多工程传奇。',
+          response: '大河文明拓扑矩阵博大精深！古老吊脚楼与跨楼云轨均已载入大河先民智慧图谱！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+        {
+          id: 'zero_thanks_evergreen',
+          text: '交流感想：感谢数据流共享，我对大河协作意志有了更深刻的共振！',
+          response: '碳基探索者无须客气！调度主脑已将你的文明共鸣数据全量存档，协作度提升！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+      ];
+    case 'steel_soul':
+      return [
+        {
+          id: 'steel_lore_evergreen',
+          text: '继续请教：关于近代西迁工业与民族抗战的更多悲壮史诗。',
+          response: '巴渝工业与大河精神千锤百炼！无论是江防要塞还是百年重钢高炉，皆为民族坚韧脊梁！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+        {
+          id: 'steel_thanks_evergreen',
+          text: '交流感想：感谢前辈教诲，我对千锤百炼的工匠风骨肃然起敬！',
+          response: '好后生客气了！能有你这样尊重历史记忆的文明溯源者，老夫的高炉火种后继有人！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+      ];
+    default:
+      return [
+        {
+          id: 'lore_b1_static',
+          text: '继续请教：关于当地历史与巴渝风貌的更多传奇。',
+          response: '巴渝大地的文化博大精深！无论是古老的吊脚楼、抗战历史，还是高空云轨，都凝聚着先民的勤劳与智慧！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+        {
+          id: 'lore_b2_static',
+          text: '交流感想：感谢热情分享，我对这片土地有了更深刻的共鸣！',
+          response: '客气了！能有你这样尊重历史与风貌的探索者，十分欣慰！好感度 +2！',
+          favorabilityDelta: 2,
+        },
+      ];
+  }
+};
+
 export const EVERGREEN_CHOICES: DialogueChoice[] = [
   {
     id: 'lore_b1_static',
@@ -10,7 +90,7 @@ export const EVERGREEN_CHOICES: DialogueChoice[] = [
   {
     id: 'lore_b2_static',
     text: '交流感想：感谢热情分享，我对这片土地有了更深刻的共鸣！',
-    response: '客气了！能有你这样尊重历史与风貌的探索者，老夫/姐十分欣慰！好感度 +2！',
+    response: '客气了！能有你这样尊重历史与风貌的探索者，十分欣慰！好感度 +2！',
     favorabilityDelta: 2,
   },
 ];

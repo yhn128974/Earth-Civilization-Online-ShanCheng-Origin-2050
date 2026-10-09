@@ -434,14 +434,23 @@ export function App() {
       handleUpdateFavorability(result.favorabilityNpcId, result.favorabilityDelta);
     }
     if (result.itemId) {
-      handleGainItem(result.itemId);
+      const isFirstMiniGame = result.gameType === 'porter_climb' || result.itemId === 'pass_card';
+      if (isFirstMiniGame) {
+        const currentFav = gameState.npcFavorability?.['bangbang_88'] ?? 20;
+        const nextFav = currentFav + (result.favorabilityDelta ?? 0);
+        if (nextFav >= 100) {
+          handleGainItem(result.itemId);
+        }
+      } else {
+        handleGainItem(result.itemId);
+      }
     }
     if (result.logMessage) {
       addLog(`🎮 [工坊大捷] ${result.logMessage}`);
     }
     if (result.favorabilityNpcId) {
       const winQuotes: Record<string, string> = {
-        bangbang_88: '好后生！肩挑千斤腰不弯，重心稳如磐石！这才是咱们重庆棒棒刻在骨子里的硬脊梁！老汉这辈子服你！',
+        bangbang_88: '好样的！八十米陡坎硬是一步一个脚印踩上来了！山城的脊梁，后继有人咯！',
         zero_machine: '监测到神经阻抗下降……大河高架极速穿楼，声学消噪护盾完美闭环！你证明了人类直觉在狂澜中同舟共济的不可替代性！',
         gaiwan_jie: '巴适得板！毛肚七上八下脆生生，牛油翻滚热气腾腾！这才是咱们山城刻在骨子里的人间烟火气！来，这包秘制火锅底料你拿去！',
         steel_soul: '千锤百炼，烈火金刚！这一记重锤砸出了当年汉阳铁厂西迁大渡口的铁骨铮铮！百年工业火种，为你而鸣！',
@@ -1196,6 +1205,7 @@ export function App() {
         <MiniGameModal
           initialGame={activeMiniGame}
           unlockedLocations={gameState.unlockedLocations}
+          npcFavorability={gameState.npcFavorability}
           isMuted={isMuted}
           onClose={() => setActiveMiniGame(null)}
           onReward={handleMiniGameReward}

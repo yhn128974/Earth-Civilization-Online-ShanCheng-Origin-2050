@@ -11,14 +11,20 @@ import {
   Activity,
   TrendingUp,
 } from 'lucide-react';
-import { bgmManager } from '../../utils/audio';
+import { bgmManager, speakNpcMessage } from '../../utils/audio';
 interface PorterGameProps {
   onSuccess: () => void;
   isMuted: boolean;
   onRecordMistake?: (reason?: string) => void;
+  currentFavorability?: number;
 }
 
-export const PorterBalanceGame: React.FC<PorterGameProps> = ({ onSuccess, isMuted, onRecordMistake }) => {
+export const PorterBalanceGame: React.FC<PorterGameProps> = ({
+  onSuccess,
+  isMuted,
+  onRecordMistake,
+  currentFavorability = 20,
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [distance, setDistance] = useState(0); // 0 to 80 meters
   const [balance, setBalance] = useState(0); // -50 to +50. Safe zone: -12 to +12
@@ -113,6 +119,35 @@ export const PorterBalanceGame: React.FC<PorterGameProps> = ({ onSuccess, isMute
     return () => clearInterval(interval);
   }, [isPlaying, isGameOver, isVictory]);
 
+  const handleVictory = () => {
+    setIsVictory(true);
+    setIsPlaying(false);
+    bgmManager.playSfx('success');
+    speakNpcMessage(
+      'bangbang_88',
+      '好样的！八十米陡坎硬是一步一个脚印踩上来了！山城的脊梁，后继有人咯！',
+      isMuted
+    );
+    onSuccess();
+  };
+
+  const handleStartGame = () => {
+    setDistance(0);
+    setBalance(0);
+    setStamina(100);
+    setStepsCount(0);
+    setStreak(0);
+    setIsGameOver(false);
+    setIsVictory(false);
+    setIsPlaying(true);
+    setCurrentEvent('深吸一口气，观察重心偏角，按 [A / D] 调节扁担，按 [空格 / 蹬阶] 稳步攀登！');
+    speakNpcMessage(
+      'bangbang_88',
+      '好小子！抓稳扁担！十八梯路滑梯陡，踩稳石阶莫慌，老汉在顶峰等你！',
+      isMuted
+    );
+  };
+
   // Step Forward Action - 80M summit
   const handleStepForward = () => {
     if (!isPlaying || isGameOver || isVictory) return;
@@ -160,10 +195,7 @@ export const PorterBalanceGame: React.FC<PorterGameProps> = ({ onSuccess, isMute
       );
 
       if (nextDistance >= 80) {
-        setIsVictory(true);
-        setIsPlaying(false);
-        bgmManager.playSfx('success');
-        onSuccess();
+        handleVictory();
       }
     } else if (Math.abs(currentBal) <= 25) {
       // 3. Warning Zone (13° ~ 25°): Partial stride with heavy momentum penalties
@@ -186,10 +218,7 @@ export const PorterBalanceGame: React.FC<PorterGameProps> = ({ onSuccess, isMute
       setCurrentEvent(`⚠️ 扁担偏斜（${Math.round(currentBal)}°），脚步踉跄！仅前进 +${stepGain}M！快按 [A/D] 回正！`);
 
       if (nextDistance >= 80) {
-        setIsVictory(true);
-        setIsPlaying(false);
-        bgmManager.playSfx('success');
-        onSuccess();
+        handleVictory();
       }
     } else {
       // 4. Danger Zone (> 25°): Cannot step forward safely, stumble!
@@ -331,20 +360,15 @@ export const PorterBalanceGame: React.FC<PorterGameProps> = ({ onSuccess, isMute
             <p className="text-xs text-slate-200 text-center max-w-md">
               凭借敏锐的平衡感知与扎实的每一步蹬阶，你亲自将沉重的合金负荷挑上了解放碑顶层！
             </p>
-            <div className="text-xs font-mono text-emerald-400 font-bold">
-              获得奖励：🪙 +15 赛博积分 | ⚡ +20 义体能量 | ❤️ 棒棒好感度 +20 | 🎁 颁发【山城脊梁之竹·前哨共济信物】！
+            <div className="text-xs font-mono text-emerald-400 font-bold text-center px-2">
+              {Math.min(100, currentFavorability + 20) >= 100 ? (
+                <>获得奖励：🪙 +15 赛博积分 | ⚡ +20 义体能量 | ❤️ 棒棒好感度 +20（达到 100%） | 🎁 颁发【山城脊梁之竹·前哨共济信物】！</>
+              ) : (
+                <>获得奖励：🪙 +15 赛博积分 | ⚡ +20 义体能量 | ❤️ 棒棒好感度 +20（当前: {Math.min(100, currentFavorability + 20)}/100，好感度达到 100% 即可获得信物）</>
+              )}
             </div>
             <button
-              onClick={() => {
-                setDistance(0);
-                setBalance(0);
-                setStamina(100);
-                setStepsCount(0);
-                setStreak(0);
-                setIsVictory(false);
-                setIsPlaying(true);
-                setCurrentEvent('深吸一口气，观察重心偏角，按 [A / D] 调节扁担，按 [空格 / 蹬阶] 稳步攀登！');
-              }}
+              onClick={handleStartGame}
               className="px-6 py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 cursor-pointer shadow-lg"
             >
               再次挑战攀爬
@@ -361,16 +385,7 @@ export const PorterBalanceGame: React.FC<PorterGameProps> = ({ onSuccess, isMute
               山城梯坎险峻，重担挑运切忌盲目连续踩踏空格！建议每蹬一步观察倾角，随时按 [A / D] 回正重心后再蹬下一步！
             </p>
             <button
-              onClick={() => {
-                setDistance(0);
-                setBalance(0);
-                setStamina(100);
-                setStepsCount(0);
-                setStreak(0);
-                setIsGameOver(false);
-                setIsPlaying(true);
-                setCurrentEvent('深吸一口气，观察重心偏角，按 [A / D] 调节扁担，按 [空格 / 蹬阶] 稳步攀登！');
-              }}
+              onClick={handleStartGame}
               className="px-6 py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 cursor-pointer shadow-md"
             >
               重整旗鼓 · 再次尝试
@@ -383,7 +398,7 @@ export const PorterBalanceGame: React.FC<PorterGameProps> = ({ onSuccess, isMute
       <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
         {!isPlaying && !isVictory && !isGameOver ? (
           <button
-            onClick={() => setIsPlaying(true)}
+            onClick={handleStartGame}
             className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black text-sm rounded-xl hover:brightness-110 shadow-lg flex items-center justify-center gap-2 cursor-pointer"
           >
             <Play className="w-4 h-4 fill-slate-950" />

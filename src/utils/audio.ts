@@ -1470,7 +1470,10 @@ export function cleanDialogueText(text: string): string {
   return cleanText.trim();
 }
 
-function playAudioUrl(url: string, npcId: string = '') {
+function playAudioUrl(url: string, npcId: string = '', fallbackText?: string) {
+  if (currentAudioElement && !currentAudioElement.paused && currentAudioElement.src.includes(url)) {
+    return;
+  }
   stopAllSpeech();
   const audio = new Audio(url);
   currentAudioElement = audio;
@@ -1484,17 +1487,26 @@ function playAudioUrl(url: string, npcId: string = '') {
       currentAudioPlayPromise = null;
     }
   };
-  audio.onerror = () => {
+  audio.onerror = (e) => {
+    console.warn(`[Audio Playback] 本地预录音频加载失败或未落盘 (${url}):`, e);
     setSpeechState(false, '');
     if (currentAudioElement === audio) {
       currentAudioElement = null;
       currentAudioPlayPromise = null;
+    }
+    // 关键自愈容灾：若本地预录音频 404 或损坏，立即无缝降级至拟真神经语音引擎，100% 保证有声！
+    if (fallbackText) {
+      console.info(`[Audio Fallback] 已自动启用神经语音保底播报: "${fallbackText.slice(0, 25)}..."`);
+      speakWithLocalNeuralVoice(npcId, fallbackText);
     }
   };
   currentAudioPlayPromise = audio.play();
   currentAudioPlayPromise.catch((err) => {
     if (err.name !== 'AbortError') {
       console.warn('[Audio Playback] 自动播放受阻或失败:', err);
+      if (fallbackText) {
+        speakWithLocalNeuralVoice(npcId, fallbackText);
+      }
     }
     setSpeechState(false, '');
   });
@@ -2058,6 +2070,14 @@ const NPC_LOCAL_AUDIO_MAP: LocalAudioEntry[] = [
   { npcId: 'bangbang_88', prefix: '老夫这钛合金骨架再坚硬', file: '/audio/npc/bangbang_bb_cyber_heritage.mp3' },
   // 防火墙破壁台词
   { npcId: 'bangbang_88', prefix: '逻辑防火墙全面破壁', file: '/audio/npc/bangbang_firewall_breach.mp3' },
+  // 棒棒 88 号实操彩蛋与挑运小游戏
+  { npcId: 'bangbang_88', prefix: '好小子！有骨气！这机械扁担虽沉', file: '/audio/npc/bangbang_bb_egg_porter_climb.mp3' },
+  { npcId: 'bangbang_88', prefix: '好小子！有骨气', file: '/audio/npc/bangbang_bb_egg_porter_climb.mp3' },
+  { npcId: 'bangbang_88', prefix: '好小子！抓稳扁担', file: '/audio/npc/bangbang_porter_start.mp3' },
+  { npcId: 'bangbang_88', prefix: '好小子！抓稳扁担！十八梯路滑梯陡', file: '/audio/npc/bangbang_porter_start.mp3' },
+  { npcId: 'bangbang_88', prefix: '好样的！八十米陡坎硬是一步一个脚印踩上来了', file: '/audio/npc/bangbang_porter_win.mp3' },
+  { npcId: 'bangbang_88', prefix: '好样的！八十米陡坎', file: '/audio/npc/bangbang_porter_win.mp3' },
+  { npcId: 'bangbang_88', prefix: '好后生！肩挑千斤腰不弯', file: '/audio/npc/bangbang_porter_win.mp3' },
 
   // ── 盖碗姐 ──────────────────────────────────────────────────────────────
   // 问候语
@@ -2095,6 +2115,13 @@ const NPC_LOCAL_AUDIO_MAP: LocalAudioEntry[] = [
   { npcId: 'gaiwan_jie', prefix: '算你问着行家了', file: '/audio/npc/gaiwan_gw_tea_array_code.mp3' },
   { npcId: 'gaiwan_jie', prefix: '变脸变的是世态人情', file: '/audio/npc/gaiwan_gw_opera_heritage.mp3' },
   { npcId: 'gaiwan_jie', prefix: '早年间江面上万舟并进', file: '/audio/npc/gaiwan_gw_chuanjiang_market.mp3' },
+  // 盖碗姐实操彩蛋与火锅小游戏
+  { npcId: 'gaiwan_jie', prefix: '哎哟喂！小行家还真手痒了撒', file: '/audio/npc/gaiwan_gw_egg_hotpot_master.mp3' },
+  { npcId: 'gaiwan_jie', prefix: '哎哟喂！小行家还真手痒了撒？灶膛柴火正旺', file: '/audio/npc/gaiwan_gw_egg_hotpot_master.mp3' },
+  { npcId: 'gaiwan_jie', prefix: '起火开烫咯！毛肚鸭肠七上八下', file: '/audio/npc/gaiwan_hotpot_start.mp3' },
+  { npcId: 'gaiwan_jie', prefix: '起火开烫咯', file: '/audio/npc/gaiwan_hotpot_start.mp3' },
+  { npcId: 'gaiwan_jie', prefix: '巴适得板！毛肚七上八下脆生生', file: '/audio/npc/gaiwan_trial_win.mp3' },
+  { npcId: 'gaiwan_jie', prefix: '巴适得板', file: '/audio/npc/gaiwan_trial_win.mp3' },
 
   // ── AI 零号机 ───────────────────────────────────────────────────────────
   // 问候语
@@ -2133,6 +2160,15 @@ const NPC_LOCAL_AUDIO_MAP: LocalAudioEntry[] = [
   { npcId: 'zero_machine', prefix: '逻辑防火墙全面破壁', file: '/audio/npc/zero_firewall_breach.mp3' },
   { npcId: 'zero_machine', prefix: 'AI 零号机底层逻辑完成净化', file: '/audio/npc/zero_firewall_breach.mp3' },
   { npcId: 'zero_machine', prefix: 'AI零号机底层逻辑完成净化', file: '/audio/npc/zero_firewall_breach.mp3' },
+  // AI 零号机实操彩蛋与单轨驾驶小游戏
+  { npcId: 'zero_machine', prefix: '指令确认·全息神经同步', file: '/audio/npc/zero_egg_monorail_pilot.mp3' },
+  { npcId: 'zero_machine', prefix: '指令确认全息神经同步', file: '/audio/npc/zero_egg_monorail_pilot.mp3' },
+  { npcId: 'zero_machine', prefix: '指令确认', file: '/audio/npc/zero_egg_monorail_pilot.mp3' },
+  { npcId: 'zero_machine', prefix: '监测到碳基生物强烈同调意图', file: '/audio/npc/zero_egg_monorail_pilot.mp3' },
+  { npcId: 'zero_machine', prefix: '零号机动力核心已就绪', file: '/audio/npc/zero_monorail_start.mp3' },
+  { npcId: 'zero_machine', prefix: '完美进站！穿楼消噪阻尼完全闭合', file: '/audio/npc/zero_monorail_win.mp3' },
+  { npcId: 'zero_machine', prefix: '完美进站', file: '/audio/npc/zero_monorail_win.mp3' },
+  { npcId: 'zero_machine', prefix: '监测到神经阻抗下降', file: '/audio/npc/zero_trial_win.mp3' },
 
   // ── 钢铁之魂 ────────────────────────────────────────────────────────────
   // 试听 sampleLine（必须排在长句问候语之前，防止较短前缀被先命中）
@@ -2198,9 +2234,14 @@ const NPC_LOCAL_AUDIO_MAP: LocalAudioEntry[] = [
   // 固定选项 11：实体钢铁与物理骨架
   { npcId: 'steel_soul', prefix: '任凭云端算力幻化万千', file: '/audio/npc/steel_cyber_foundation.mp3' },
 
-  // 固定选项 12：执锤淬火实操彩蛋
+  // 固定选项 12：执锤淬火实操彩蛋与高炉锻造小游戏
   { npcId: 'steel_soul', prefix: '好！崽儿好气魄！空谈误国', file: '/audio/npc/steel_egg_steel_forging.mp3' },
   { npcId: 'steel_soul', prefix: '好！崽儿好气魄', file: '/audio/npc/steel_egg_steel_forging.mp3' },
+  { npcId: 'steel_soul', prefix: '高炉已沸，炉温正炽', file: '/audio/npc/steel_forging_start.mp3' },
+  { npcId: 'steel_soul', prefix: '高炉已沸', file: '/audio/npc/steel_forging_start.mp3' },
+  { npcId: 'steel_soul', prefix: '百炼成钢！火花淬尽千重铁', file: '/audio/npc/steel_forging_win.mp3' },
+  { npcId: 'steel_soul', prefix: '百炼成钢', file: '/audio/npc/steel_forging_win.mp3' },
+  { npcId: 'steel_soul', prefix: '千锤百炼，烈火金刚', file: '/audio/npc/steel_trial_win.mp3' },
 
   // 请求开启试炼回应
   { npcId: 'steel_soul', prefix: '很好！高炉的火光将见证', file: '/audio/npc/steel_start_quiz.mp3' },
@@ -2267,7 +2308,7 @@ export async function speakNpcMessage(
   if (localFile) {
     console.info(`[Local NPC Audio] ✅ 命中本地预录音频: ${localFile}`);
     if (currentReqId === activeSpeechRequestId) {
-      playAudioUrl(localFile, npcId);
+      playAudioUrl(localFile, npcId, cleanText);
     }
     return;
   }

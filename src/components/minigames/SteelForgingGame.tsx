@@ -9,7 +9,7 @@ import {
   Zap,
   Activity,
 } from 'lucide-react';
-import { bgmManager } from '../../utils/audio';
+import { bgmManager, speakNpcMessage } from '../../utils/audio';
 interface SteelGameProps {
   onSuccess: () => void;
   isMuted: boolean;
@@ -97,6 +97,25 @@ export const SteelForgingGame: React.FC<SteelGameProps> = ({ onSuccess, isMuted,
     return () => clearInterval(timer);
   }, [isPlaying, isVictory, isGameOver, ringSpeed]);
 
+  const handleStartGame = () => {
+    setIsPlaying(true);
+    setTemperature(1550);
+    setStrikesCount(0);
+    setBilletIntegrity(100);
+    setRingRadius(85);
+    setRingSpeed(2.5);
+    setTargetZone(STAGE_ZONES[0]);
+    targetZoneRef.current = STAGE_ZONES[0];
+    setIsVictory(false);
+    setIsGameOver(false);
+    setForgingLog('高炉点火！保持炉温在 1420-1680°C，金色能量圈缩入绿色靶区时按 [空格 / 锤击] 落锤！共需 5 锤！');
+    speakNpcMessage(
+      'steel_soul',
+      '高炉已沸，炉温正炽！执起千斤重锤，让烈火淬炼出山城最硬的钢骨！',
+      isMuted
+    );
+  };
+
   const handleHammerStrike = () => {
     if (!isPlayingRef.current || isVictoryRef.current || isGameOverRef.current) return;
 
@@ -123,6 +142,11 @@ export const SteelForgingGame: React.FC<SteelGameProps> = ({ onSuccess, isMuted,
         setForgingLog(`${hitGrade} 淬火大成！抗战量子特种合金出炉 (${nextStrikes} / 5)！`);
         setIsVictory(true);
         bgmManager.playSfx('success');
+        speakNpcMessage(
+          'steel_soul',
+          '百炼成钢！火花淬尽千重铁，重工之脊撑苍穹！这才是大国工业的骨气！',
+          isMuted
+        );
         onSuccess();
       } else {
         const nextZone = STAGE_ZONES[nextStrikes];
@@ -316,17 +340,7 @@ export const SteelForgingGame: React.FC<SteelGameProps> = ({ onSuccess, isMuted,
         {/* Start Button or Big Hammer Strike Button */}
         {!isPlaying && !isVictory && !isGameOver ? (
           <button
-            onClick={() => {
-              setIsPlaying(true);
-              setTemperature(1550);
-              setStrikesCount(0);
-              setBilletIntegrity(100);
-              setRingRadius(85);
-              setRingSpeed(2.5);
-              setTargetZone(STAGE_ZONES[0]);
-              targetZoneRef.current = STAGE_ZONES[0];
-              setForgingLog('高炉点火！金色能量圈缩入【绿色渐变靶区】时按 [空格 / 锤击] 落锤！共需 5 锤！');
-            }}
+            onClick={handleStartGame}
             className="w-full max-w-md py-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:brightness-110 active:scale-95 text-slate-950 font-black text-sm rounded-xl shadow-xl flex items-center justify-center gap-2 cursor-pointer transition-transform"
           >
             <Play className="w-5 h-5 fill-slate-950" />
@@ -354,17 +368,7 @@ export const SteelForgingGame: React.FC<SteelGameProps> = ({ onSuccess, isMuted,
               获得奖励：🪙 +20 赛博积分 | ⚡ +20 义体能量 | ❤️ 钢铁之魂好感度 +25 | 🔓 终极文明试炼解封！
             </div>
             <button
-              onClick={() => {
-                setStrikesCount(0);
-                setBilletIntegrity(100);
-                setTemperature(1550);
-                setRingRadius(85);
-                setRingSpeed(2.5);
-                setTargetZone(STAGE_ZONES[0]);
-                targetZoneRef.current = STAGE_ZONES[0];
-                setIsVictory(false);
-                setIsPlaying(true);
-              }}
+              onClick={handleStartGame}
               className="px-6 py-2.5 rounded-xl bg-orange-500 text-slate-950 font-bold text-xs hover:bg-orange-400 cursor-pointer shadow-lg"
             >
               再次熔铸
@@ -381,17 +385,7 @@ export const SteelForgingGame: React.FC<SteelGameProps> = ({ onSuccess, isMuted,
               需 5 次合格重锤方可百炼成钢。保持高炉在 1420-1680°C 并看准金色圆圈收缩至绿色靶心！
             </p>
             <button
-              onClick={() => {
-                setStrikesCount(0);
-                setBilletIntegrity(100);
-                setTemperature(1550);
-                setRingRadius(85);
-                setRingSpeed(2.5);
-                setTargetZone(STAGE_ZONES[0]);
-                targetZoneRef.current = STAGE_ZONES[0];
-                setIsGameOver(false);
-                setIsPlaying(true);
-              }}
+              onClick={handleStartGame}
               className="px-6 py-2.5 rounded-xl bg-orange-500 text-slate-950 font-bold text-xs hover:bg-orange-400 cursor-pointer shadow-md"
             >
               换一块新钢坯 · 重新锻铸

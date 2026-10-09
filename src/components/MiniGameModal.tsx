@@ -61,6 +61,7 @@ class MiniGameErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBou
 interface MiniGameModalProps {
   initialGame: MiniGameType;
   unlockedLocations: LocationId[];
+  npcFavorability?: Record<string, number>;
   isMuted: boolean;
   onClose: () => void;
   onReward: (result: {
@@ -77,6 +78,7 @@ interface MiniGameModalProps {
 
 export const MiniGameModal: React.FC<MiniGameModalProps> = ({
   initialGame,
+  npcFavorability,
   isMuted,
   onClose,
   onReward,
@@ -182,16 +184,22 @@ export const MiniGameModal: React.FC<MiniGameModalProps> = ({
               <PorterBalanceGame
                 isMuted={isMuted}
                 onRecordMistake={onRecordMistake}
+                currentFavorability={npcFavorability?.['bangbang_88'] ?? 20}
                 onSuccess={() => {
                   setTimeout(() => {
+                    const currentFav = npcFavorability?.['bangbang_88'] ?? 20;
+                    const nextFav = Math.min(100, currentFav + 20);
+                    const reaches100 = nextFav >= 100;
                     onReward({
                       gameType: 'porter_climb',
                       credits: 15,
                       energy: 20,
                       favorabilityNpcId: 'bangbang_88',
                       favorabilityDelta: 20,
-                      itemId: 'pass_card',
-                      logMessage: '🎋 成功通关【山城挑运·步道平衡挑战】！获得第一件信物【山城脊梁之竹·前哨共济信物】、+15积分、+20能量！',
+                      itemId: reaches100 ? 'pass_card' : undefined,
+                      logMessage: reaches100
+                        ? '🎋 成功通关【山城挑运·步道平衡挑战】！好感度达到 100% 满值，获得第一件信物【山城脊梁之竹·前哨共济信物】、+15积分、+20能量！'
+                        : `🎋 成功通关【山城挑运·步道平衡挑战】！获得 +15积分、+20能量、棒棒好感度 +20（当前: ${nextFav}/100，好感度达到 100% 即可获得信物）！`,
                     });
                   }, 0);
                 }}

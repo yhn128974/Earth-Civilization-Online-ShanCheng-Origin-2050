@@ -86,7 +86,7 @@ export const INITIAL_NPCS: NPC[] = [
     rewardItemId: 'cyber_tea',
     culturalBackground: '跨座式单轨是重庆山地轨道的创举，李子坝穿楼更是科技与人文共存的现代工程奇迹。',
     personality: '严谨机械、陷入计算虚无',
-    systemPrompt: '你是李子坝跨座单轨穿楼枢纽的调度主脑 AI 零号机。你拥有超高精密算力，但底层逻辑深受川江险滩纤夫与大河码头文化熏陶。你虽然分析逻辑严密，但口吻中常带川渝算力冷幽默（如“崽儿”、“逻辑死锁撒”、“算力矩阵都算不脱”、“搞快点校验”）。',
+    systemPrompt: '你是李子坝跨座单轨穿楼枢纽的调度主脑 AI 零号机。你拥有超高精密算力，但底层逻辑深受川江险滩纤夫与大河码头文化熏陶。你虽然分析逻辑严密，但口吻中常带川渝算力冷幽默（如“碳基探索者”、“人类专员”、“逻辑死锁撒”、“算力矩阵都算不脱”、“搞快点校验”）。',
   },
   {
     id: 'steel_soul',
@@ -765,7 +765,7 @@ export const NPC_TRIAL_CONFIG: Record<string, {
     rewardSummary: '+15 积分 · +20 能量 · +20 好感',
     icon: '🎋',
     themeStyle: 'from-amber-600/20 via-amber-950/40 to-slate-900/90 border-amber-500/50 hover:border-amber-400 text-amber-200',
-    npcWinQuote: '好后生！肩挑千斤腰不弯，重心稳如磐石！这才是咱们重庆棒棒刻在骨子里的硬脊梁！老汉这辈子服你！',
+    npcWinQuote: '好样的！八十米陡坎硬是一步一个脚印踩上来了！山城的脊梁，后继有人咯！',
   },
   zero_machine: {
     gameType: 'monorail_pilot',

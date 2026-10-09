@@ -11,7 +11,7 @@ import {
   Activity,
   Zap,
 } from 'lucide-react';
-import { bgmManager } from '../../utils/audio';
+import { bgmManager, speakNpcMessage } from '../../utils/audio';
 interface MonorailGameProps {
   onSuccess: () => void;
   isMuted: boolean;
@@ -151,6 +151,11 @@ export const MonorailPilotGame: React.FC<MonorailGameProps> = ({ onSuccess, isMu
     setIsVictory(false);
     setIsGameOver(false);
     setIsPlaying(true);
+    speakNpcMessage(
+      'zero_machine',
+      '零号机动力核心已就绪。全速推进，注意弯道离心率与穿楼消噪指令！',
+      isMuted
+    );
   };
 
   // Synchronous Monorail Audio Lifecycle
@@ -262,6 +267,11 @@ export const MonorailPilotGame: React.FC<MonorailGameProps> = ({ onSuccess, isMu
         setIsVictory(true);
         bgmManager.playMonorailDockingChime();
         bgmManager.playSfx('success');
+        speakNpcMessage(
+          'zero_machine',
+          '完美进站！穿楼消噪阻尼完全闭合，李子坝站文明能级达成满分！',
+          isMuted
+        );
         onSuccess();
         return;
       }

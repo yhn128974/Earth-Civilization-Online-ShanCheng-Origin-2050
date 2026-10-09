@@ -17,6 +17,7 @@ import {
 } from '../constants/gameConfig';
 import {
   EVERGREEN_CHOICES,
+  getEvergreenChoices,
   FIREWALL_BATTLES,
   getSceneThemeConfig,
   type BattleChoice,
@@ -457,7 +458,8 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
       if (easterEggChoices.length > 0) {
         steelChoices.unshift(...easterEggChoices);
       }
-      const availableEvergreen = EVERGREEN_CHOICES.filter((ec) => !isChoiceUsed(ec.id));
+      const npcEvergreen = getEvergreenChoices(npc.id);
+      const availableEvergreen = npcEvergreen.filter((ec) => !isChoiceUsed(ec.id));
       if (steelChoices.length < 3) {
         steelChoices = [...steelChoices, ...availableEvergreen];
       }
@@ -477,7 +479,8 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
     }
 
     // If regular choices are sparse, fill with unused evergreen choices
-    const availableEvergreen = EVERGREEN_CHOICES.filter((ec) => !isChoiceUsed(ec.id));
+    const npcEvergreen = getEvergreenChoices(npc.id);
+    const availableEvergreen = npcEvergreen.filter((ec) => !isChoiceUsed(ec.id));
     return [...combined, ...availableEvergreen].slice(0, 3);
   };
 
@@ -651,7 +654,17 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
             const requiredTrial = NPC_TRIAL_CONFIG[npc.id]?.gameType;
             const isTrialDone = requiredTrial ? gameState.completedMiniGames?.[requiredTrial] : true;
             if (!isTrialDone) {
-              replyText += `\n\n⚠️【试炼尚未通关】：崽儿，咱俩聊得虽然投机，但纸上谈兵可拿不走信物！请在对话选项中寻找【实操彩蛋】并亲自完成操作考验，老汉/老姐立即将【${rewardItem.name}】双手奉上！`;
+              if (npc.id === 'bangbang_88') {
+                replyText += `\n\n⚠️【试炼尚未通关】：好小子！咱俩聊得虽然投机，但纸上谈兵可拿不走信物！请在对话选项中寻找【身手一试】挑运实操彩蛋并亲自登顶十八梯，老汉立即将【${rewardItem.name}】双手奉上！`;
+              } else if (npc.id === 'gaiwan_jie') {
+                replyText += `\n\n⚠️【试炼尚未通关】：客官！咱俩摆得虽然投机，但光听不练可拿不走信物撒！请在对话选项中寻找【掌勺开灶】九宫格火锅实操彩蛋并亲自烫好毛肚，姐立即将【${rewardItem.name}】双手奉上！`;
+              } else if (npc.id === 'zero_machine') {
+                replyText += `\n\n⚠️【试炼尚未通关】：碳基探索者！理论逻辑数据已充足，但仍需实体动态实操校准！请在对话选项中寻找【全息试驾】实操彩蛋并亲自完成穿楼调度，本中枢立即将【${rewardItem.name}】全息授权给你！`;
+              } else if (npc.id === 'steel_soul') {
+                replyText += `\n\n⚠️【试炼尚未通关】：好崽儿！空谈误国，实干兴邦！请在对话选项中寻找【执锤淬火】实操彩蛋并亲自登上高炉锻出合格特种钢，老夫立即为你开启终极文明试炼！`;
+              } else {
+                replyText += `\n\n⚠️【试炼尚未通关】：请先在对话选项中完成实操彩蛋挑战，方可领取信物！`;
+              }
             } else {
               replyText += `\n\n✅ 试炼已亲自实操通关，好感度已达 100/100 满分！`;
               onGainItem(npc.rewardItemId);
@@ -747,11 +760,11 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
       if (npc.id === 'bangbang_88') {
         replyText = `【老汉爽朗一笑】崽儿，老汉谢你的茶水钱！不过咱们棒棒靠膀子力气吃饭，你我交情更看重志同道合。好感度提升 +${actualGain}（当前: ${nextFavVal}/100）。后面的真章，咱还得在十八梯石阶上见！`;
       } else if (npc.id === 'gaiwan_jie') {
-        replyText = `【盖碗姐喜笑颜开】小弟娃耿直！这碗赛博沱茶姐请你喝了。好感度提升 +${actualGain}（当前: ${nextFavVal}/100）！剩下的真章咱们龙门阵和九宫格里摆！`;
+        replyText = `【盖碗姐喜笑颜开】弟娃儿耿直撒！这碗赛博沱茶姐请你喝了。好感度提升 +${actualGain}（当前: ${nextFavVal}/100）！剩下的真章咱们龙门阵和九宫格里摆！`;
       } else if (npc.id === 'zero_machine') {
         replyText = `【数据流波纹微漾】物质能源交互确认，神经突触共振微幅提升 +${actualGain}（当前: ${nextFavVal}/100）。提示：逻辑协议信物需实操穿楼调度，无法通过纯积分溢出获取。`;
       } else if (npc.id === 'steel_soul') {
-        replyText = `【高炉火光微亮】高炉添炭完成！炉膛微亮，感谢专员补给！好感度提升 +${actualGain}（当前: ${nextFavVal}/100）。但记住，重钢的工业火种认的是真才实学，绝非金钱能通关！`;
+        replyText = `【高炉火光微亮】高炉添炭完成！炉膛炽烈，老夫谢过好崽儿的补给！好感度提升 +${actualGain}（当前: ${nextFavVal}/100）。但记住，重钢的工业火种认的是真才实学与千锤百炼，绝非金钱能通关！`;
       } else {
         replyText = `多谢赏识！收到你的 ${CREDITS_PER_TIP} 赛博致意积分，好感度提升 +${actualGain}！当前好感度: ${nextFavVal}/100！`;
       }
@@ -1463,14 +1476,26 @@ export const NpcDialogueModal: React.FC<NpcDialogueModalProps> = ({
                                 }));
                               setShuffledBattleChoices(reShuffled);
                             }
-                            triggerSpeech('神经回路过载死锁！防火墙自愈重构，请平复心智重新校准！');
+                            const overloadVoiceMap: Record<string, string> = {
+                              bangbang_88: '哎呀崽儿，扁担滑脱咯！莫急莫躁，歇口气咱重新爬这道坎！',
+                              gaiwan_jie: '哎哟喂，心浮气躁咯撒！连碗盖都刮翻了，喝口清茶咱们重新摆！',
+                              zero_machine: '神经回路过载死锁！大河防火墙自愈重构，请平复心智重新校准！',
+                              steel_soul: '急躁乃工匠大忌！高炉气压暴冲，深呼吸沉下心来，重新淬火！',
+                            };
+                            triggerSpeech(overloadVoiceMap[npc.id] || '神经回路过载死锁！防火墙自愈重构，请平复心智重新校准！');
                           } else {
                             setBattleLogs((prev) => [
                               `⚠️【算力脉冲反噬】义体能量 -5，防御进度回退 25%！(${newWrong}/2 次失误即死锁)`,
                               choice.reply,
                               ...prev,
                             ]);
-                            triggerSpeech('算力脉冲反噬，逻辑偏离！');
+                            const penaltyVoiceMap: Record<string, string> = {
+                              bangbang_88: '崽儿，莫慌！步子迈虚了，稳住重心再上！',
+                              gaiwan_jie: '客官莫急，茶汤晃洒咯！稳住心神再来！',
+                              zero_machine: '警告：算力脉冲反噬，人本逻辑出现偏离！',
+                              steel_soul: '崽儿！手力虚浮，铁砧回弹！屏气凝神再砸！',
+                            };
+                            triggerSpeech(penaltyVoiceMap[npc.id] || '算力脉冲反噬，逻辑偏离！');
                           }
                         }
                       }}

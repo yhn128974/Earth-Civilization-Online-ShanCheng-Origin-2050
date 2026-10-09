@@ -4,7 +4,7 @@ import {
   Trophy,
   AlertTriangle,
 } from 'lucide-react';
-import { bgmManager } from '../../utils/audio';
+import { bgmManager, speakNpcMessage } from '../../utils/audio';
 
 interface HotpotIngredient {
   id: string;
@@ -51,6 +51,30 @@ export const HotpotMasterGame: React.FC<HotpotGameProps> = ({ onSuccess, isMuted
 
   const currentOrderRef = useRef(currentOrder);
   currentOrderRef.current = currentOrder;
+
+  const handleStartGame = () => {
+    setIsPlaying(true);
+    setScore(0);
+    setPotHealth(100);
+    setSlots(Array.from({ length: 9 }, () => ({ ingredient: null, startTime: 0 })));
+    setFeedback('火候已开！请看上方盖碗姐点单，将食材放入对应火候格！');
+    speakNpcMessage(
+      'gaiwan_jie',
+      '起火开烫咯！毛肚鸭肠七上八下，看准上方点单，手脚麻利点撒！',
+      isMuted
+    );
+  };
+
+  const handleVictory = () => {
+    setIsVictory(true);
+    setIsPlaying(false);
+    speakNpcMessage(
+      'gaiwan_jie',
+      '巴适得板！毛肚七上八下脆生生，牛油翻滚热气腾腾！这才是咱们山城刻在骨子里的人间烟火气！来，这包秘制火锅底料你拿去！',
+      isMuted
+    );
+    onSuccess();
+  };
 
   const getSlotType = (index: number): 'center' | 'cross' | 'corner' => {
     if (index === 4) return 'center';
@@ -157,8 +181,7 @@ export const HotpotMasterGame: React.FC<HotpotGameProps> = ({ onSuccess, isMuted
         setScore((s) => {
           const nextScore = s + gain;
           if (nextScore >= 800) {
-            setIsVictory(true);
-            onSuccess();
+            handleVictory();
           }
           return nextScore;
         });
@@ -175,8 +198,7 @@ export const HotpotMasterGame: React.FC<HotpotGameProps> = ({ onSuccess, isMuted
         setScore((s) => {
           const nextScore = s + 25;
           if (nextScore >= 800) {
-            setIsVictory(true);
-            onSuccess();
+            handleVictory();
           }
           return nextScore;
         });
@@ -370,12 +392,7 @@ export const HotpotMasterGame: React.FC<HotpotGameProps> = ({ onSuccess, isMuted
               获得奖励：🪙 +15 赛博积分 | ⚡ +30 义体能量 | ❤️ 盖碗姐好感度 +20 | 🎁 颁发【山崖农耕之火·烟火宝典碎片】与火锅底料！
             </div>
             <button
-              onClick={() => {
-                setScore(0);
-                setPotHealth(100);
-                setIsVictory(false);
-                setIsPlaying(true);
-              }}
+              onClick={handleStartGame}
               className="px-6 py-2.5 rounded-xl bg-rose-500 text-slate-950 font-bold text-xs hover:bg-rose-400 cursor-pointer shadow-lg"
             >
               再烫一锅
@@ -392,13 +409,7 @@ export const HotpotMasterGame: React.FC<HotpotGameProps> = ({ onSuccess, isMuted
               火锅讲究的是起落有序，绿色高亮即是爽脆黄金时机。积满 800 分即可通关！
             </p>
             <button
-              onClick={() => {
-                setScore(0);
-                setPotHealth(100);
-                setSlots(Array.from({ length: 9 }, () => ({ ingredient: null, startTime: 0 })));
-                setIsGameOver(false);
-                setIsPlaying(true);
-              }}
+              onClick={handleStartGame}
               className="px-6 py-2.5 rounded-xl bg-rose-500 text-slate-950 font-bold text-xs hover:bg-rose-400 cursor-pointer shadow-md"
             >
               换一锅底料 · 再次掌勺
@@ -410,13 +421,7 @@ export const HotpotMasterGame: React.FC<HotpotGameProps> = ({ onSuccess, isMuted
       {/* Start Button or Chef Banner */}
       {!isPlaying && !isVictory && !isGameOver ? (
         <button
-          onClick={() => {
-            setIsPlaying(true);
-            setScore(0);
-            setPotHealth(100);
-            setSlots(Array.from({ length: 9 }, () => ({ ingredient: null, startTime: 0 })));
-            setFeedback('火候已开！请看上方盖碗姐点单，将食材放入对应火候格！');
-          }}
+          onClick={handleStartGame}
           className="w-full py-3 sm:py-3.5 bg-gradient-to-r from-rose-600 to-amber-500 text-white font-black text-xs sm:text-sm rounded-xl hover:brightness-110 shadow-lg flex items-center justify-center gap-2 cursor-pointer"
         >
           <Play className="w-4 h-4 fill-white" />
